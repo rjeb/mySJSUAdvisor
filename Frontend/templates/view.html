@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Mega Bite</title>
+</head>
+<body>
+    <h1>Find the perfect bite</h1>
+       <form method="POST">
+            Category:<br>
+        <input type="text" name="category" value={{category}}><br>
+            Location:<br>
+        <input type="text" name="location" value={{location}}><br>
+           Maximum Price: (1 is cheap, 4 is expensive)<br>
+        <input type="text" name="price" value={{price}}><br><br><br>
+        <input type="submit" value="Submit"><br><br>
+    </form>
+
+    <table>
+        {%if results %}
+        <p>We found your perfect bite!</p>
+        {%else%}
+        <p>Sorry we could not find your perfect bite :(</p>
+        {%endif%}
+
+        {% for result in results %}
+        <tr>
+            <td>{{result.name}}</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>{{result.location}}</td>
+            <td>{{result.category}}</td>
+                {%if result.price == 1 %}
+                <td>$<td>
+                {%elif result.price == 2 %}
+                <td>$$</td>
+                {%elif result.price == 3 %}
+                <td>$$$</td>
+                {%else%}
+                <td>$$$$</td>
+                {%endif%}
+        </tr>
+         {%endfor%}
+    </table>
+
+    <p><a href="/home">Home</a></p>
+</body>
+</html>
