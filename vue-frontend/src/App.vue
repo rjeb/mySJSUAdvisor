@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to MY ADVISOR"/>
+    <employee-form />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import EmployeeForm from './components/EmployeeForm.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+      EmployeeForm,
   }
 }
 </script>
