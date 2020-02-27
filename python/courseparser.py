@@ -94,6 +94,19 @@ def make_soup(url):
         return bs4.BeautifulSoup(bytes, 'html.parser')
 
 
+def report(course_links):
+    """
+     Write all requested information to a file
+     :param info:  (list) all the information we harvest
+     :param course_name: (string) the name of course
+    """
+    file = '.'.join(["courses", 'txt'])
+    with open(file, 'w', encoding='utf-8') as output_file:
+        for dept in course_links:
+            for course in dept:
+                output_file.write(extract_info(course))
+
+
 def main():
     # Get all the relevant links referenced from the seed SEED (top_url)
     fall = 'http://info.sjsu.edu/web-dbgen/schedules-fall/all-departments.html'
@@ -112,10 +125,9 @@ def main():
 
     # Go through each department link and returns a list of links for each course from the respective department
     course_links = [get_links(link, 2) for link in dept_links]
-    # print(course_links)
 
-    # Get course info
-    print(extract_info(course_links[0][0]))
+    # Print course info to a text file
+    report(course_links)
 
 
     """
