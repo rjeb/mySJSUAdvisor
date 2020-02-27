@@ -9,6 +9,7 @@ SEED = 'http://info.sjsu.edu/home/schedules.html'
 
 import urllib.request
 import bs4
+import course_structures
 import re
 
 
@@ -125,8 +126,12 @@ def main():
     # Go through each department link and returns a list of links for each course from the respective department
     course_links = [get_links(link, 2) for link in dept_links]
 
-    # Print course info to a text file
-    report(course_links)
+
+    # Get course info
+    #print(extract_info(course_links[0][0]))
+    str = extract_info(course_links[0][0])
+    courseTest = course_structures.Course(str)
+    courseTest.to_string()
 
     """
     # Prompt the user for a course name
