@@ -7,6 +7,12 @@
       <input type="text" v-model="number">
       <h2>Submit</h2>
       <input type="submit" value="Submit" v-on:click="submit"/>
+      <h2 style="color:DodgerBlue" v-if="error && submitting">
+          ERROR
+      </h2>
+      <h2 style="color:DodgerBlue" v-if="success">
+          HANG ON! FINDING THE PERFECT SCHEDULE FOR YOU :)
+      </h2>
     </div>
   </div>
 </template>
@@ -16,13 +22,25 @@
     name: 'employee-form',
     data: () => ({
       name: '',
-      number: ''
+      number: '',
+      success: false,
+      submitting: false,
+      error: false,
     }),
     methods :{
-      submit: function(){
+      submit(){
+        this.submitting = true
+        this.clearStatus()
         console.log(this.name, this.number);
         this.name = '';
         this.number = '';
+        this.success = true
+        this.error = false
+        this.submitting = false
+      },
+      clearStatus(){
+        this.success = false
+        this.error = false
       }
     }
   }
