@@ -29,8 +29,6 @@ def get_links(base_url, table_index):
     soup = make_soup(base_url)
     table = soup.find_all('table')
 
-    # print(len(table))
-
     while len(table) <= table_index:
         table_index -= 1
 
@@ -51,9 +49,10 @@ def extract_info(url):
     on the url and course
     """
     soup = make_soup(url)
-    table = soup.find_all('table')[2]
+    header = soup.find_all('h3')[0].get_text()
+    table = soup.find_all('table')[2].get_text()
 
-    return table.get_text()
+    return header + table
 
     '''school_name = table('h3')[1].get_text()
     all_site = table.find_all('td', string=course_regex)
@@ -128,7 +127,6 @@ def main():
 
     # Print course info to a text file
     report(course_links)
-
 
     """
     # Prompt the user for a course name
