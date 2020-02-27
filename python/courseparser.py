@@ -9,6 +9,7 @@ SEED = 'http://info.sjsu.edu/home/schedules.html'
 
 import urllib.request
 import bs4
+import course_structures
 import re
 
 
@@ -115,9 +116,10 @@ def main():
     # print(course_links)
 
     # Get course info
-    print(extract_info(course_links[0][0]))
-
-
+    #print(extract_info(course_links[0][0]))
+    str = extract_info(course_links[0][0])
+    courseTest = course_structures.Course(str)
+    courseTest.to_string()
     """
     # Prompt the user for a course name
     course_name = input("Please enter a course name: ")
