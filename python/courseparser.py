@@ -53,7 +53,7 @@ def extract_info(url):
     header = soup.find_all('h3')[0].get_text()
     table = soup.find_all('table')[2].get_text()
 
-    return header + table
+    return table + header
 
     '''school_name = table('h3')[1].get_text()
     all_site = table.find_all('td', string=course_regex)
@@ -130,6 +130,7 @@ def main():
     # Get course info
     #print(extract_info(course_links[0][0]))
     str = extract_info(course_links[0][0])
+    #print(str)
     courseTest = course_structures.Course(str)
     courseTest.to_string()
 

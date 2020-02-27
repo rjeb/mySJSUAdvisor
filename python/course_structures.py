@@ -14,7 +14,7 @@ class Course(object):
         class_days: MW, TTH, F, etc. enum representation
         course_desc: string describing the class
         GE_TYPE: enum for the GE Type(if any) this class is in
-        department: DEPT of class
+        department_name: DEPT of class
         class_num: string that represents the number Ex. CS 161 <-
         section_number: number represents the section of the class
         professor_name: name of the professor that teaches the class
@@ -26,23 +26,27 @@ class Course(object):
     def read_course(self, coursefile):
         course_lines = coursefile.splitlines()
         y = 0
+
         """
         for line in course_lines:
             print(line + ": " + y.__str__())
             y += 1
         """
-        self.units = re.split("Units", course_lines[7], 1)[1] #parse units
+
+        self.units = re.sub("Units", "", course_lines[7], 1) #parse units
         self.start_time, self.end_time = re.split("\s", re.sub("Time", "", course_lines[13])) #parse start, end times
-        self.class_days = re.sub("Days", "", course_lines[12])
+        self.class_days = re.sub("Days", "", course_lines[12], 1)
         self.seats_taken, self.seats_total, *trash = re.split("\s|/", re.sub("Enrollment", "", course_lines[10], 1)) #parse seats and trash rest of string
         self.section_num = re.sub("Section", "", course_lines[5], 1)
         self.course_desc = re.sub("Title", "", course_lines[2], 1)
         self.professor_name = re.sub("Instructor", "", course_lines[16], 1)
         self.class_code = re.sub("Code", "", course_lines[6], 1)
         self.class_mode = re.sub("Mode", "", course_lines[9], 1)
-        #print(self.class_mode)
+        self.department_name, self.class_num = re.split(" ", course_lines[17], 1)
+        #print(self.department_name + " " + self.class_num)
 
     def to_string(self):
+        print("Class: " + self.department_name + " " + self.class_num)
         print("Units:" + self.units)
         print("Duration: " + self.start_time + " to " + self.end_time)
         print("Days: " + self.class_days)
