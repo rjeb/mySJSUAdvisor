@@ -78,5 +78,16 @@ class Department:
     Attributes:
     name: name of Department
     classes: a collection of classes within the Department
+    """
 
+class Schedule:
+    """An object that represents a collection on non-conflicted classes
+
+    Arguments: classes: collection of classes
+
+    Attributes:
+        classes: a collection of classes inside the scedule
+
+    Methods:
+        
     """
