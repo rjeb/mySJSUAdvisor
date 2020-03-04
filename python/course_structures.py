@@ -60,7 +60,7 @@ class Course(object):
 class Professor(object):
     """ An object to represent a professor in SJSU
 
-        Arguments: prof_file: text file containing course info
+        Arguments: the attributes listed below
 
         Attributes:
         name: name of the professor
@@ -79,12 +79,16 @@ class Professor(object):
 class Department:
     """An object to represent an SJSU Department
 
-        Arguments: deptfile: text file containing course info
+        Arguments: deptfile: the attributes listed below
 
         Attributes:
         name: name of Department
         classes: a collection of classes within the Department
     """
+
+    def __init__(self, name, classes):
+        self.name = name
+        self.classes = classes
 
 class Schedule:
     """An object that represents a collection on non-conflicted classes
@@ -96,3 +100,6 @@ class Schedule:
 
         Methods:
     """
+
+    def __init__(self, classes):
+        self.classes = classes
