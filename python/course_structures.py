@@ -56,3 +56,16 @@ class Course(object):
         print("Professor: " + self.professor_name)
         print("Class Code: " + self.class_code)
         print("Class Mode:" + self.class_mode)
+
+class Professor(object):
+    """ An object to represent a class/course in the SJSU catalogue
+        Arguments: prof_file: text file containing course info
+
+        Attributes:
+        name: name of the professor
+        rating: a professors professor rating
+        hotness: how HOT a professor is
+        profID: a number representing a professors ID
+        dept: the department of the professor:
+        
+    """
