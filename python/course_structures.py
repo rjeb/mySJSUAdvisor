@@ -69,25 +69,30 @@ class Professor(object):
         profID: a number representing a professors ID
         dept: the department of the professor:
     """
+    def __init__(self, name, rating = -1, hotness = -1, profID = -1, dept = None):
+        self.name = name
+        self.rating = rating
+        self.hotness = hotness
+        self.profID = profID
+        self.dept = dept
 
 class Department:
     """An object to represent an SJSU Department
 
-    Arguments: deptfile: text file containing course info
+        Arguments: deptfile: text file containing course info
 
-    Attributes:
-    name: name of Department
-    classes: a collection of classes within the Department
+        Attributes:
+        name: name of Department
+        classes: a collection of classes within the Department
     """
 
 class Schedule:
     """An object that represents a collection on non-conflicted classes
 
-    Arguments: classes: collection of classes
+        Arguments: classes: collection of classes
 
-    Attributes:
-        classes: a collection of classes inside the scedule
+        Attributes:
+            classes: a collection of classes inside the scedule
 
-    Methods:
-        
+        Methods:
     """
