@@ -49,11 +49,17 @@ def extract_info(url):
     :return school_name: course_info: (string) the matched course based
     on the url and course
     """
-    soup = make_soup(url)
-    header = soup.find_all('h3')[0].get_text()
-    table = soup.find_all('table')[2].get_text()
 
-    return table + header
+    #edgecase url = search table
+    if bool(re.match("http://info.sjsu.edu/web-dbgen/schedules", url)) != True:
+        return None
+
+    else:
+        soup = make_soup(url)
+        header = soup.find_all('h3')[0].get_text()
+        table = soup.find_all('table')[2].get_text()
+
+        return table + header
 
     '''school_name = table('h3')[1].get_text()
     all_site = table.find_all('td', string=course_regex)
@@ -129,10 +135,22 @@ def main():
 
     # Get course info
     #print(extract_info(course_links[0][0]))
-    str = extract_info(course_links[0][0])
+
+    courses = set()
+    #str = extract_info(course_links[0][0])
+    for dept_list in course_links:
+        for link in dept_list:
+            tmpCourse = extract_info(link)
+            if (tmpCourse) != None:
+                courses.add(tmpCourse)
+
+    for x in courses:
+        print(x)
+    #course = set(extract_info(link) for link in dept_links)
+
+
     #print(str)
-    courseTest = course_structures.Course(str)
-    courseTest.to_string()
+    #courseTest = course_structures.Course(str)
 
     """
     # Prompt the user for a course name
