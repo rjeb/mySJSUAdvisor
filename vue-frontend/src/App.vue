@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <img alt="Vue logo" src="./assets/logoNew.png">
     <h1>Welcome to MY ADVISOR</h1>
     <p> My advisor is an application which will make the process of selecting classes easier for you......</p>
     <p>ADD MORE HERE ABOUT THE APP</p>
