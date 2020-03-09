@@ -1,3 +1,9 @@
+import Vue from 'vue'
+import courses from '@components/courses'
+
+<template>
+  <component :is="dynamicComponent"></component> 
+</template>
 <template>
   <div id="employee-form">
     <div>
@@ -5,8 +11,9 @@
       <input type="text" v-model="name">
       <h3>Course Number(example: 161)</h3>
       <input type="text" v-model="number">
-      <h2>Submit</h2>
-      <input type="submit" value="Submit" v-on:click="submit"/>
+      <h2> </h2>
+      <button v-on:click="say('Hang on..Working on schedule')">Submit</button>
+      <h2> </h2>
       <h2 style="color:DodgerBlue" v-if="error && submitting">
           ERROR
       </h2>
@@ -28,15 +35,11 @@
       error: false,
     }),
     methods :{
-      submit(){
-        this.submitting = true
-        this.clearStatus()
-        console.log(this.name, this.number);
-        this.name = '';
-        this.number = '';
-        this.success = true
-        this.error = false
-        this.submitting = false
+      say: function(message){
+        alert(message)
+      },
+      dynamicComponent(){
+        return 'courses';
       },
       clearStatus(){
         this.success = false
