@@ -11,6 +11,7 @@ import urllib.request
 import bs4
 import course_structures
 import re
+import rmpparser
 
 
 def get_links(base_url, table_index):
@@ -19,8 +20,7 @@ def get_links(base_url, table_index):
     :param base_url:
     :param table_index:
     :param top_url:  (string) base url(seed) that used
-    :return all_links:  (list) all the links that link course-course
-    equivalency on all other colleges
+    :return all_links:  (list) all the links
     """
 
     # href="/web-dbgen/schedules-spring/all-departments.html"
@@ -60,15 +60,6 @@ def extract_info(url):
         table = soup.find_all('table')[2].get_text()
 
         return table + header
-
-    '''school_name = table('h3')[1].get_text()
-    all_site = table.find_all('td', string=course_regex)
-    for each_site in all_site:
-        eqv_column = each_site.find_next_sibling('td').find_next_sibling('td')
-        if eqv_column.get_text() != 'No Current Equivalent':
-            course_info = ' '.join(eqv_column.get_text(separator=' ').split())
-            return f'{school_name}: {course_info}'
-            '''
 
 
 def report(info, course_name):
@@ -114,6 +105,7 @@ def report(course_links):
 
 
 def main():
+    '''
     # Get all the relevant links referenced from the seed SEED (top_url)
     fall = 'http://info.sjsu.edu/web-dbgen/schedules-fall/all-departments.html'
     spring = 'http://info.sjsu.edu/web-dbgen/schedules-spring/all-departments.html'
@@ -132,25 +124,25 @@ def main():
     # Go through each department link and returns a list of links for each course from the respective department
     course_links = [get_links(link, 2) for link in dept_links]
 
-
     # Get course info
-    #print(extract_info(course_links[0][0]))
-
     courses = set()
-    #str = extract_info(course_links[0][0])
+
     for dept_list in course_links:
         for link in dept_list:
-            tmpCourse = extract_info(link)
-            if (tmpCourse) != None:
-                courses.add(tmpCourse)
+            tmp_course = extract_info(link)
+            if tmp_course is not None:
+                courses.add(tmp_course)
 
-    for x in courses:
-        print(x)
-    #course = set(extract_info(link) for link in dept_links)
+    print(courses)
+    '''
 
+    # The init already parses everything, no extra calls needed here
+    rate_my_pp = rmpparser.RMP_parser()
 
-    #print(str)
-    #courseTest = course_structures.Course(str)
+    # rate_my_pp.professors returns a list of Professor Objects of which
+    # currently have no to_string method, so get on that Jason.
+    for prof in rate_my_pp.professors:
+        print(prof.name)
 
     """
     # Prompt the user for a course name

@@ -69,10 +69,9 @@ class Professor(object):
         profID: a number representing a professors ID
         dept: the department of the professor:
     """
-    def __init__(self, name, rating = -1, hotness = -1, profID = -1, dept = None):
+    def __init__(self, name, rating = -1, profID = -1, dept = None):
         self.name = name
         self.rating = rating
-        self.hotness = hotness
         self.profID = profID
         self.dept = dept
 
