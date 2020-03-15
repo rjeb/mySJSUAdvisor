@@ -11,7 +11,7 @@ import urllib.request
 import bs4
 import course_structures
 import re
-
+#import pandas as pd
 
 def get_links(base_url, table_index):
     """
@@ -111,6 +111,23 @@ def report(course_links):
         for dept in course_links:
             for course in dept:
                 output_file.write(extract_info(course))
+
+def writeToDeptFile(isSpring = True):
+    """
+    :param isSpring: are we writing based on Spring semester?
+    :return: written csv files for each department
+    """
+
+    fall = 'http://info.sjsu.edu/web-dbgen/schedules-fall/all-departments.html'
+    spring = 'http://info.sjsu.edu/web-dbgen/schedules-spring/all-departments.html'
+
+    if isSpring:
+        dept_links = get_links(fall, 2)
+    elif not isSpring:
+        dept_links = get_links(spring, 2)
+
+    # Go through each department link and returns a list of links for each course from the respective department
+    course_links = [get_links(link, 2) for link in dept_links]
 
 
 def main():
