@@ -11,8 +11,10 @@ import urllib.request
 import bs4
 import course_structures
 import re
+import pandas as pd
 import rmpparser
-
+from pandas import DataFrame
+import pathlib
 
 def get_links(base_url, table_index):
     """
@@ -59,7 +61,10 @@ def extract_info(url):
         header = soup.find_all('h3')[0].get_text()
         table = soup.find_all('table')[2].get_text()
 
-        return table + header
+        #print("table:" + soup.find_all('h3')[0].get_text())
+        #print(table + header)
+
+        return header + table
 
 
 def report(info, course_name):
@@ -103,9 +108,67 @@ def report(course_links):
             for course in dept:
                 output_file.write(extract_info(course))
 
+def writeToDeptFile(isSpring = True):
+    """
+    :param isSpring: True if in Spring, False if in Fall
+    :return: written csv files for each department
+    """
+
+    fall = 'http://info.sjsu.edu/web-dbgen/schedules-fall/all-departments.html'
+    spring = 'http://info.sjsu.edu/web-dbgen/schedules-spring/all-departments.html'
+
+    if isSpring:
+        dept_links = get_links(fall, 2)
+    elif not isSpring:
+        dept_links = get_links(spring, 2)
+
+    # Go through each department link and returns a list of links for each course from the respective department
+    course_links = [get_links(link, 2) for link in dept_links]
+
+    # Get course info
+    courses = set()
+    indexStop = 0;
+    for dept_list in course_links:
+        for link in dept_list:
+            # print(extract_info(link))
+            tmp_coursestring = extract_info(link)
+            if tmp_coursestring is not None:
+                """ iterate through the raw parsed data
+                course_strings = tmp_coursestring.splitlines()
+                index1 = 0
+                for index in range(len(course_strings)):
+                    print(index1.__str__() + ": " + course_strings[index1])
+                    index1 +=1;
+                """
+                tmp_course = course_structures.Course(tmp_coursestring)
+                courses.add(tmp_course)
+
+    # print(courses)
+
+    courseAttr = {'Dept': [], 'ClassNum': [], 'SectionNum': [], 'Units': [], 'StartTime': [], 'EndTime': [], 'Days': [],
+                  'SeatsTaken': [], 'SeatsTotal': [], 'Professor': [], 'ClassCode': [], 'ClassMode': [], 'Desc': []}
+
+    for courseIndex in courses:
+        # courseIndex.to_string()
+        courseAttr['Dept'].append(courseIndex.department_name)
+        courseAttr['ClassNum'].append(courseIndex.class_num)
+        courseAttr['SectionNum'].append(courseIndex.section_num)
+        courseAttr['Units'].append(courseIndex.units)
+        courseAttr['StartTime'].append(courseIndex.start_time)
+        courseAttr['EndTime'].append(courseIndex.end_time)
+        courseAttr['Days'].append(courseIndex.class_days)
+        courseAttr['SeatsTaken'].append(courseIndex.seats_taken)
+        courseAttr['SeatsTotal'].append(courseIndex.seats_total)
+        courseAttr['Professor'].append(courseIndex.professor_name)
+        courseAttr['ClassCode'].append(courseIndex.class_code)
+        courseAttr['ClassMode'].append(courseIndex.class_mode)
+        courseAttr['Desc'].append(courseIndex.course_desc)
+    df = DataFrame(data=courseAttr)
+    pathlib.Path
+    df.to_csv("classes.csv", index=False, header=True)
 
 def main():
-    '''
+
     # Get all the relevant links referenced from the seed SEED (top_url)
     fall = 'http://info.sjsu.edu/web-dbgen/schedules-fall/all-departments.html'
     spring = 'http://info.sjsu.edu/web-dbgen/schedules-spring/all-departments.html'
@@ -113,7 +176,7 @@ def main():
     # Get the semester to parse from the user and returns a list of
     # departments from that semester
     # semester = input('Which semester would you like to view? ')
-    semester = 'fall'
+    semester = 'spring'
     if semester == 'fall':
         dept_links = get_links(fall, 2)
     elif semester == 'spring':
@@ -124,18 +187,11 @@ def main():
     # Go through each department link and returns a list of links for each course from the respective department
     course_links = [get_links(link, 2) for link in dept_links]
 
-    # Get course info
-    courses = set()
 
-    for dept_list in course_links:
-        for link in dept_list:
-            tmp_course = extract_info(link)
-            if tmp_course is not None:
-                courses.add(tmp_course)
+    writeToDeptFile(True) #writes all classes to classes.csv
+    #print(courses)
 
-    print(courses)
-    '''
-
+    """
     # The init already parses everything, no extra calls needed here
     rate_my_pp = rmpparser.RMP_parser()
 
@@ -143,6 +199,9 @@ def main():
     # currently have no to_string method, so get on that Jason.
     for prof in rate_my_pp.professors:
         print(prof.name)
+
+    """
+
 
     """
     # Prompt the user for a course name
