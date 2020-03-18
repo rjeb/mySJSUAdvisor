@@ -125,9 +125,47 @@ def writeToDeptFile(isSpring = True):
     # Go through each department link and returns a list of links for each course from the respective department
     course_links = [get_links(link, 2) for link in dept_links]
 
+    # Get course info
     courses = set()
+    indexStop = 0;
+    for dept_list in course_links:
+        for link in dept_list:
+            # print(extract_info(link))
+            tmp_coursestring = extract_info(link)
+            if tmp_coursestring is not None:
+                """ iterate through the raw parsed data
+                course_strings = tmp_coursestring.splitlines()
+                index1 = 0
+                for index in range(len(course_strings)):
+                    print(index1.__str__() + ": " + course_strings[index1])
+                    index1 +=1;
+                """
+                tmp_course = course_structures.Course(tmp_coursestring)
+                courses.add(tmp_course)
 
+    # print(courses)
 
+    courseAttr = {'Dept': [], 'ClassNum': [], 'SectionNum': [], 'Units': [], 'StartTime': [], 'EndTime': [], 'Days': [],
+                  'SeatsTaken': [], 'SeatsTotal': [], 'Professor': [], 'ClassCode': [], 'ClassMode': [], 'Desc': []}
+
+    for courseIndex in courses:
+        # courseIndex.to_string()
+        courseAttr['Dept'].append(courseIndex.department_name)
+        courseAttr['ClassNum'].append(courseIndex.class_num)
+        courseAttr['SectionNum'].append(courseIndex.section_num)
+        courseAttr['Units'].append(courseIndex.units)
+        courseAttr['StartTime'].append(courseIndex.start_time)
+        courseAttr['EndTime'].append(courseIndex.end_time)
+        courseAttr['Days'].append(courseIndex.class_days)
+        courseAttr['SeatsTaken'].append(courseIndex.seats_taken)
+        courseAttr['SeatsTotal'].append(courseIndex.seats_total)
+        courseAttr['Professor'].append(courseIndex.professor_name)
+        courseAttr['ClassCode'].append(courseIndex.class_code)
+        courseAttr['ClassMode'].append(courseIndex.class_mode)
+        courseAttr['Desc'].append(courseIndex.course_desc)
+    df = DataFrame(data=courseAttr)
+    pathlib.Path
+    df.to_csv("classes.csv", index=False, header=True)
 
 def main():
 
@@ -150,52 +188,7 @@ def main():
     course_links = [get_links(link, 2) for link in dept_links]
 
 
-    # Get course info
-    courses = set()
-    indexStop = 0;
-    for dept_list in course_links:
-        for link in dept_list:
-            #print(extract_info(link))
-            tmp_coursestring = extract_info(link)
-            if tmp_coursestring is not None:
-                """ iterate through the raw parsed data
-                course_strings = tmp_coursestring.splitlines()
-                index1 = 0
-                for index in range(len(course_strings)):
-                    print(index1.__str__() + ": " + course_strings[index1])
-                    index1 +=1;
-                """
-                tmp_course = course_structures.Course(tmp_coursestring)
-                courses.add(tmp_course)
-                indexStop += 1
-                if indexStop >= 5:
-                    break
-        if indexStop > 5:
-            break
-
-    #print(courses)
-
-    courseAttr = {'Dept': [], 'ClassNum': [], 'SectionNum': [], 'Units': [], 'StartTime': [], 'EndTime': [], 'Days': [], 'SeatsTaken': [], 'SeatsTotal': [], 'Professor': [], 'ClassCode': [], 'ClassMode': [], 'Desc': []}
-    
-    for courseIndex in courses:
-        #courseIndex.to_string()
-        courseAttr['Dept'].append(courseIndex.department_name)
-        courseAttr['ClassNum'].append(courseIndex.class_num)
-        courseAttr['SectionNum'].append(courseIndex.section_num)
-        courseAttr['Units'].append(courseIndex.units)
-        courseAttr['StartTime'].append(courseIndex.start_time)
-        courseAttr['EndTime'].append(courseIndex.end_time)
-        courseAttr['Days'].append(courseIndex.class_days)
-        courseAttr['SeatsTaken'].append(courseIndex.seats_taken)
-        courseAttr['SeatsTotal'].append(courseIndex.seats_total)
-        courseAttr['Professor'].append(courseIndex.professor_name)
-        courseAttr['ClassCode'].append(courseIndex.class_code)
-        courseAttr['ClassMode'].append(courseIndex.class_mode)
-        courseAttr['Desc'].append(courseIndex.course_desc)
-    df = DataFrame(data = courseAttr)
-    pathlib.Path
-    df.to_csv("classes.csv", index=False, header=True)
-
+    writeToDeptFile(True) #writes all classes to classes.csv
     #print(courses)
 
     """
