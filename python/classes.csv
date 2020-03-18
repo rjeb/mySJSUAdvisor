@@ -1,0 +1,7 @@
+Dept,ClassNum,SectionNum,Units,StartTime,EndTime,Days,SeatsTaken,SeatsTotal,Professor,ClassCode,ClassMode,Desc
+AE,015,02,1,1630,1720,W,3,30,S Montgomery,29996,In Person,Air & Space Flight
+ADV,095,01,3,1200,1315,MW,16,20,T Korani,29961,In Person,Working With Type
+ADV,121,01,3,1800,2045,T,39,45,S Eckstone,20004,In Person,Strategic Plan/Com
+ADV,116,01,3,1330,1615,MTWR,6,18,T Hendrick,20003,In Person,Spartan Daily Ad Staff
+ADV,091,01,3,1330,1445,MW,67,125,D Ocampo,20002,In Person,Intro Advertising
+ADV,094,01,3,1800,2045,M,10,30,D Williams,29962,In Person,Desn Fundamental 2

@@ -42,7 +42,10 @@ class Course(object):
         self.professor_name = re.sub("Instructor", "", course_lines[16], 1)
         self.class_code = re.sub("Code", "", course_lines[6], 1)
         self.class_mode = re.sub("Mode", "", course_lines[9], 1)
-        self.department_name, self.class_num = re.split(" ", course_lines[17], 1)
+        #if (course_lines[17] != ""):
+        self.department_name, self.class_num = re.split(" ", course_lines[0], 1)
+        #else: #edgecase format http://info.sjsu.edu/web-dbgen/schedules-spring/c4746268.html where class was TBA but was given time later
+            #self.department_name, self.class_num = re.split(" ", course_lines[23], 1)
         #print(self.department_name + " " + self.class_num)
 
     def to_string(self):
@@ -56,6 +59,7 @@ class Course(object):
         print("Professor: " + self.professor_name)
         print("Class Code: " + self.class_code)
         print("Class Mode:" + self.class_mode)
+
 
 class Professor(object):
     """ An object to represent a professor in SJSU
