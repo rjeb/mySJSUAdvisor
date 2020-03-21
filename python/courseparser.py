@@ -208,21 +208,9 @@ def main():
     course_links = [get_links(link, 2) for link in dept_links]
 
 
-    #writeToDeptFile(True) #writes all classes to classes.csv
-    writeToProfFile()
+    #writeToDeptFile(False) #writes all classes to classes.csv
+    #writeToProfFile()
     #print(courses)
-
-    '''
-    # The init already parses everything, no extra calls needed here
-    rate_my_pp = rmpparser.RMP_parser()
-
-    # rate_my_pp.professors returns a list of Professor Objects of which
-    # currently have no to_string method, so get on that Jason.
-    for prof in rate_my_pp.professors:
-        print(prof.name)
-        print(prof.rating)
-    '''
-
 
 
     """
