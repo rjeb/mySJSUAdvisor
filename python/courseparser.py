@@ -150,22 +150,42 @@ def writeToDeptFile(isSpring = True):
 
     for courseIndex in courses:
         # courseIndex.to_string()
-        courseAttr['Dept'].append(courseIndex.department_name)
-        courseAttr['ClassNum'].append(courseIndex.class_num)
-        courseAttr['SectionNum'].append(courseIndex.section_num)
-        courseAttr['Units'].append(courseIndex.units)
-        courseAttr['StartTime'].append(courseIndex.start_time)
-        courseAttr['EndTime'].append(courseIndex.end_time)
-        courseAttr['Days'].append(courseIndex.class_days)
-        courseAttr['SeatsTaken'].append(courseIndex.seats_taken)
-        courseAttr['SeatsTotal'].append(courseIndex.seats_total)
-        courseAttr['Professor'].append(courseIndex.professor_name)
-        courseAttr['ClassCode'].append(courseIndex.class_code)
-        courseAttr['ClassMode'].append(courseIndex.class_mode)
-        courseAttr['Desc'].append(courseIndex.course_desc)
+        courseAttr['Dept'].insert(0, courseIndex.department_name)
+        courseAttr['ClassNum'].insert(0, courseIndex.class_num)
+        courseAttr['SectionNum'].insert(0, courseIndex.section_num)
+        courseAttr['Units'].insert(0, courseIndex.units)
+        courseAttr['StartTime'].insert(0, courseIndex.start_time)
+        courseAttr['EndTime'].insert(0, courseIndex.end_time)
+        courseAttr['Days'].insert(0, courseIndex.class_days)
+        courseAttr['SeatsTaken'].insert(0, courseIndex.seats_taken)
+        courseAttr['SeatsTotal'].insert(0, courseIndex.seats_total)
+        courseAttr['Professor'].insert(0, courseIndex.professor_name)
+        courseAttr['ClassCode'].insert(0, courseIndex.class_code)
+        courseAttr['ClassMode'].insert(0, courseIndex.class_mode)
+        courseAttr['Desc'].insert(0, courseIndex.course_desc)
     df = DataFrame(data=courseAttr)
     pathlib.Path
-    df.to_csv("classes.csv", index=False, header=True)
+    if isSpring:
+        df.to_csv("classesSpring.csv", index=False, header=True)
+    else:
+        df.to_csv("classesFall.csv", index=False, header=True)
+
+def writeToProfFile():
+    # The init already parses everything, no extra calls needed here
+    rate_my_pp = rmpparser.RMP_parser()
+
+    profAttr = {'Name': [], 'Rating': [], 'Department': [], 'ProfID': []}
+
+    # rate_my_pp.professors returns a list of Professor Objects of which
+    # currently have no to_string method, so get on that Jason.
+    for prof in rate_my_pp.professors:
+        profAttr['Name'].insert(0, prof.name)
+        profAttr['Rating'].insert(0, prof.rating)
+        profAttr['Department'].insert(0, prof.dept)
+        profAttr['ProfID'].insert(0, prof.profID)
+    df = DataFrame(data = profAttr)
+    pathlib.Path
+    df.to_csv("Professors.csv", index=False, header=True)
 
 def main():
 
@@ -188,10 +208,11 @@ def main():
     course_links = [get_links(link, 2) for link in dept_links]
 
 
-    writeToDeptFile(True) #writes all classes to classes.csv
+    #writeToDeptFile(True) #writes all classes to classes.csv
+    writeToProfFile()
     #print(courses)
 
-    """
+    '''
     # The init already parses everything, no extra calls needed here
     rate_my_pp = rmpparser.RMP_parser()
 
@@ -199,8 +220,9 @@ def main():
     # currently have no to_string method, so get on that Jason.
     for prof in rate_my_pp.professors:
         print(prof.name)
+        print(prof.rating)
+    '''
 
-    """
 
 
     """
