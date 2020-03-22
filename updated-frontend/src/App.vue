@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="container">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
     <div class="row justify-content-center">
       <div class="col-xs-12 col-sm-10 col-md-6">
         <h1 class="text-center">{{title}}</h1>
@@ -12,6 +13,7 @@
 <script>
 import Vue from 'vue';
 import Form from './components/form/Form.vue';
+import HelloWorld from './components/form/HelloWorld.vue';
 
 export default {
   name: 'app',
@@ -21,6 +23,7 @@ export default {
     }
   },
   components: {
+    HelloWorld,
     appForm: Form
   }
 }
@@ -33,5 +36,14 @@ export default {
 
   #app {
     padding: 20px;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    background-color: #dcd6f7;
+    margin-top: 60px;
+    color: #2c3e50;
   }
+  
 </style>
+
