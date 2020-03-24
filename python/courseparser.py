@@ -52,8 +52,8 @@ def extract_info(url):
     on the url and course
     """
 
-    #edgecase url = search table
-    if bool(re.match("http://info.sjsu.edu/web-dbgen/schedules", url)) != True:
+    # edgecase url = search table
+    if not bool(re.match("http://info.sjsu.edu/web-dbgen/schedules", url)):
         return None
 
     else:
