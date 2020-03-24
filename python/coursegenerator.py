@@ -1,5 +1,7 @@
 import courseparser
-
+import course_structures
+import numpy as np
+import pandas as pd
 
 # binary search and basic scheduler as defined by https://www.geeksforgeeks.org/weighted-job-scheduling-log-n-time/
 # classes are defined in total start time since Monday with Monday 12:00 am being 0 time and Sunday 11:59 pm being the latest time
@@ -48,8 +50,31 @@ def schedule(job):
 
     return table[n - 1]
 
+def getSections(df, dept, classNum):
+    dept_df = df[df['Dept'] == dept]
+    rslt_df = dept_df[dept_df['ClassNum'] == classNum]
+    return rslt_df
+
+def genSchedules(df, classTargs):
+    """
+    :param classTargs: list of tuples (Dept, classNum) which we should generate schedules with
+    :return: collection of schedules
+    """
+    sectionsList = []
+
+    for classTarg in classTargs:
+        x, y = classTarg
+        sectionsList.append(getSections(df, x, y))
+    startDF, *remainingDf = sectionsList # seperate first dataframe from rest
+    for secDF in remainingDf:
+        startDF = pd.merge(startDF, secDF, how='outer')
+    return startDF
+
 def main():
-    print("main")
+    semester = course_structures.Semester(True)
+    classTargets = [("CS", "161"), ("CS", "160"), ("CS", "154")]
+    targets = genSchedules(semester.df1, classTargets)
+    print(targets)
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,6 @@
 import re
+import numpy as np
+import pandas as pd
 
 class Course(object):
     """ An object to represent a class/course in the SJSU catalogue
@@ -106,3 +108,15 @@ class Schedule:
 
     def __init__(self, classes):
         self.classes = classes
+
+class Semester:
+    """
+
+    """
+
+    def __init__(self, isSpring):
+        if isSpring:
+            s = pd.read_csv('classesSpring.csv')
+        else:
+            s = s = pd.read_csv('classesFall.csv')
+        self.df1 = pd.DataFrame(s)
