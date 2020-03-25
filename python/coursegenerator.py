@@ -2,6 +2,8 @@ import courseparser
 import course_structures
 import numpy as np
 import pandas as pd
+from itertools import combinations, product
+import functools
 
 # binary search and basic scheduler as defined by https://www.geeksforgeeks.org/weighted-job-scheduling-log-n-time/
 # classes are defined in total start time since Monday with Monday 12:00 am being 0 time and Sunday 11:59 pm being the latest time
@@ -61,18 +63,46 @@ def genSchedules(df, classTargs):
     :return: collection of schedules
     """
     sectionsList = []
-
+    sectionsIndecies = [0]
+    sectionsIndex = 0
     for classTarg in classTargs:
         x, y = classTarg
         sectionsList.append(getSections(df, x, y))
+
     startDF, *remainingDf = sectionsList # seperate first dataframe from rest
+    sectionsIndex += len(startDF.index)
+    sectionsIndecies.append(sectionsIndex)
+
     for secDF in remainingDf:
         startDF = pd.merge(startDF, secDF, how='outer')
+        sectionsIndex += len(secDF.index)
+        sectionsIndecies.append(sectionsIndex)
+
+    #remove the first and last element of the List for generator function later
+    sectionsIndecies.pop(0)
+
+    #for index in list(combinations(startDF.index, 5)):
+    generatorIndex = 0
+    generatorList = []
+
+
+    for index in sectionsIndecies:
+        generatorList.append([*range(generatorIndex, index)])
+        generatorIndex = index
+
+
+    #scheduleIndecies = functools.reduce(lambda a,b : list(product(a, b)),generatorList)
+    scheduleIndecies = list(product(*generatorList))
+
+    for index in scheduleIndecies:
+        print(startDF.loc[index, :])
+        print('\n')
+        #print(scheduleIndecies)
     return startDF
 
 def main():
     semester = course_structures.Semester(True)
-    classTargets = [("CS", "161"), ("CS", "160"), ("CS", "154")]
+    classTargets = [("CS", "161"), ("CS", "160"), ("CS", "154"), ("CS", "147")]
     targets = genSchedules(semester.df1, classTargets)
     print(targets)
 
