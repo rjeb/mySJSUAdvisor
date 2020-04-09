@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-    <img alt="Adivisor logo" src="./logoNew.png">
-    <h1>WELCOME TO MY ADVISOR</h1>
+    <img alt="Adivisor logo" src="./logoLatest.png">
+    <h2>WELCOME TO MY ADVISOR</h2>
     <p> My advisor is an application which will make the process of selecting classes easier for you......</p>
     <p>ADD MORE HERE ABOUT THE APP</p>
   </div>
