@@ -13,6 +13,7 @@ export default {
       types: this.getTypes(),
       submitting: false,
       form: {
+        classNumber1: '',
         className1: '',
         className2: '',
         className3: '',
@@ -136,6 +137,7 @@ export default {
   },
   validations: {
     form: {
+      classNumber1: { required},
       className1: { required },
       type: { required },
     }

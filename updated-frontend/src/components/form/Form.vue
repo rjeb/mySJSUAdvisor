@@ -27,7 +27,8 @@
       </div>
       <div class="form-group">
         <label for="className1">{{ $t('form.className1') }} *</label>
-        <input type="text" class="form-control" id="className1" v-model.lazy.trim="form.className1" @blur="onFieldBlur('className1')" v-bind:class="getFieldClasses('className1')">
+        <input type="text" class="form-control" id="className1" v-model.lazy.trim="form.className1" @blur="onFieldBlur('classNumber1')" v-bind:class="getFieldClasses('classNumber1')">
+        <input type="text" class="form-control" id="classNumber1" v-model.lazy.trim="form.classNumber1" @blur="onFieldBlur('className1')" v-bind:class="getFieldClasses('className1')">
         <div v-if="isErrorField('className1')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className1') }) }}</div>
       </div>
       <div class="form-group">
