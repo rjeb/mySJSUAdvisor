@@ -43,10 +43,10 @@ export default {
       return [
         {
           value: 'CS',
-          label: 'CS'
+          label: 'form.types.CS'
         }, {
           value: 'MATH',
-          label: 'MATH'
+          label: 'form.types.MATH'
         }];
     },
     submit() {
