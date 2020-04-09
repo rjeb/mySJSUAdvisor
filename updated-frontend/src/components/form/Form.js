@@ -11,24 +11,44 @@ export default {
       errorHeader: 'error.invalidFields',
       errors: [],
       types: this.getTypes(),
+      depts: this.getDepts(),
       submitting: false,
       form: {
+        className1: null,
         classNumber1: '',
-        className1: '',
-        className2: '',
-        className3: '',
-        className4: '',
-        className5: '',
-        className6: '',
-        className7: '',
-        className8: '',
-        className9: '',
-        className10: '',
+        className2: null,
+        classNumber2: '',
+        className3: null,
+        classNumber3: '',
+        className4: null,
+        classNumber4: '',
+        className5: null,
+        classNumber5: '',
+        className6: null,
+        classNumber6: '',
+        className7: null,
+        classNumber7: '',
+        className8: null,
+        classNumber8: '',
+        className9: null,
+        classNumber9: '',
+        className10: null,
+        classNumber10: '',
         type: null
       }
     }
   },
   methods: {
+    getDepts() {
+      return [
+        {
+          value: 'CS',
+          label: 'CS'
+        }, {
+          value: 'MATH',
+          label: 'MATH'
+        }];
+    },
     submit() {
       this.$v.$touch();
       if (!this.$v.$error) {

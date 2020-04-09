@@ -27,53 +27,82 @@
       </div>
       <div class="form-group">
         <label for="className1">{{ $t('form.className1') }} *</label>
-        <input type="text" class="form-control" id="className1" v-model.lazy.trim="form.className1" @blur="onFieldBlur('classNumber1')" v-bind:class="getFieldClasses('classNumber1')">
-        <input type="text" class="form-control" id="classNumber1" v-model.lazy.trim="form.classNumber1" @blur="onFieldBlur('className1')" v-bind:class="getFieldClasses('className1')">
+        <select id="className1" class="form-control" v-model="form.className1" @blur="onFieldBlur('className1')" v-bind:class="getFieldClasses('className1')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber1" v-model.lazy.trim="form.classNumber1" @blur="onFieldBlur('classNumber1')" v-bind:class="getFieldClasses('classNumber1')">
         <div v-if="isErrorField('className1')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className1') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className2">{{ $t('form.className2') }} </label>
-        <input type="text" class="form-control" id="className2" v-model.lazy.trim="form.className2" @blur="onFieldBlur('v')" v-bind:class="getFieldClasses('className2')">
+        <select id="className2" class="form-control" v-model="form.className2" @blur="onFieldBlur('className2')" v-bind:class="getFieldClasses('className2')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber2" v-model.lazy.trim="form.classNumber2" @blur="onFieldBlur('classNumber2')" v-bind:class="getFieldClasses('classNumber2')">
         <div v-if="isErrorField('className2')" class="invalid-feedback"></div>
       </div>
       <div class="form-group">
         <label for="className3">{{ $t('form.className3') }} </label>
-        <input type="text" class="form-control" id="className3" v-model.lazy.trim="form.className3" @blur="onFieldBlur('className3')" v-bind:class="getFieldClasses('className3')">
+        <select id="className3" class="form-control" v-model="form.className3" @blur="onFieldBlur('className3')" v-bind:class="getFieldClasses('className3')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber3" v-model.lazy.trim="form.classNumber3" @blur="onFieldBlur('classNumber3')" v-bind:class="getFieldClasses('classNumber3')">
         <div v-if="isErrorField('className3')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className3') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className4">{{ $t('form.className4') }} </label>
-        <input type="text" class="form-control" id="className4" v-model.lazy.trim="form.className4" @blur="onFieldBlur('className4')" v-bind:class="getFieldClasses('className4')">
+        <select id="className4" class="form-control" v-model="form.className4" @blur="onFieldBlur('className4')" v-bind:class="getFieldClasses('className4')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber4" v-model.lazy.trim="form.classNumber4" @blur="onFieldBlur('classNumber4')" v-bind:class="getFieldClasses('classNumber4')">
         <div v-if="isErrorField('className4')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className4') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className5">{{ $t('form.className5') }} </label>
-        <input type="text" class="form-control" id="className5" v-model.lazy.trim="form.className5" @blur="onFieldBlur('className5')" v-bind:class="getFieldClasses('className5')">
+        <select id="className5" class="form-control" v-model="form.className5" @blur="onFieldBlur('className5')" v-bind:class="getFieldClasses('className5')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber5" v-model.lazy.trim="form.classNumber5" @blur="onFieldBlur('classNumber5')" v-bind:class="getFieldClasses('classNumber5')">
         <div v-if="isErrorField('className5')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className5') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className6">{{ $t('form.className6') }} </label>
-        <input type="text" class="form-control" id="className6" v-model.lazy.trim="form.className6" @blur="onFieldBlur('className6')" v-bind:class="getFieldClasses('className6')">
+        <select id="className6" class="form-control" v-model="form.className6" @blur="onFieldBlur('className6')" v-bind:class="getFieldClasses('className6')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber6" v-model.lazy.trim="form.classNumber6" @blur="onFieldBlur('classNumber6')" v-bind:class="getFieldClasses('classNumber6')">
         <div v-if="isErrorField('className6')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className6') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className7">{{ $t('form.className7') }} </label>
-        <input type="text" class="form-control" id="className7" v-model.lazy.trim="form.className7" @blur="onFieldBlur('className7')" v-bind:class="getFieldClasses('className7')">
+        <select id="className7" class="form-control" v-model="form.className7" @blur="onFieldBlur('className7')" v-bind:class="getFieldClasses('className7')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber7" v-model.lazy.trim="form.classNumber7" @blur="onFieldBlur('classNumber7')" v-bind:class="getFieldClasses('classNumber7')">
         <div v-if="isErrorField('className7')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className7') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className8">{{ $t('form.className8') }} </label>
-        <input type="text" class="form-control" id="className8" v-model.lazy.trim="form.className8" @blur="onFieldBlur('className8')" v-bind:class="getFieldClasses('className8')">
+        <select id="className8" class="form-control" v-model="form.className8" @blur="onFieldBlur('className8')" v-bind:class="getFieldClasses('className8')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber8" v-model.lazy.trim="form.classNumber8" @blur="onFieldBlur('classNumber8')" v-bind:class="getFieldClasses('classNumber8')">
         <div v-if="isErrorField('className8')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className8') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className9">{{ $t('form.className9') }} </label>
-        <input type="text" class="form-control" id="className" v-model.lazy.trim="form.className9" @blur="onFieldBlur('className9')" v-bind:class="getFieldClasses('className9')">
+        <select id="className9" class="form-control" v-model="form.className9" @blur="onFieldBlur('className9')" v-bind:class="getFieldClasses('className9')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber9" v-model.lazy.trim="form.classNumber9" @blur="onFieldBlur('classNumber9')" v-bind:class="getFieldClasses('classNumber9')">
         <div v-if="isErrorField('className9')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className9') }) }}</div>
       </div>
       <div class="form-group">
         <label for="className10">{{ $t('form.className10') }} </label>
-        <input type="text" class="form-control" id="className" v-model.lazy.trim="form.className10" @blur="onFieldBlur('className10')" v-bind:class="getFieldClasses('className10')">
+        <select id="className10" class="form-control" v-model="form.className10" @blur="onFieldBlur('className10')" v-bind:class="getFieldClasses('className10')">
+            <option v-for="dept in depts" v-bind:key="dept.value" v-bind:value="dept.value">{{ $t(dept.label) }}</option>
+        </select>
+        <input type="text" class="form-control" id="classNumber10" v-model.lazy.trim="form.classNumber10" @blur="onFieldBlur('classNumber10')" v-bind:class="getFieldClasses('classNumber10')">
         <div v-if="isErrorField('className10')" class="invalid-feedback">{{ $t('error.fieldRequired', { field: $t('form.className10') }) }}</div>
       </div>
     </form>
