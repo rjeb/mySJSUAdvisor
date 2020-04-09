@@ -21,6 +21,11 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
+img {
+  padding: 0 7em 2em 0;
+  margin: 40px 0 0;
+  align: center;
+}
 ul {
   list-style-type: none;
   padding: 0;
