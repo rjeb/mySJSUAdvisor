@@ -216,7 +216,7 @@ export default {
         submit() {
         	let formData = { dept: this.dept, number1: this.number1, name2: this.name2, number2: this.number2, name3: this.name3, number3: this.number3, name4: this.name4, number4: this.number4, name5: this.name5, number5: this.number5, name6: this.name6, number6: this.number6, name7: this.name7, number7: this.number7, name8: this.name8, number8: this.number8, name9: this.name9, number9: this.number9, name10: this.name10, number10: this.number10}
             console.log(formData);
-	        
+	        this.$refs.form.reset();
             this.$refs.form2.reset();
             this.$refs.form3.reset();
             this.$refs.form4.reset();
@@ -226,6 +226,7 @@ export default {
             this.$refs.form8.reset();
             this.$refs.form9.reset();
             this.$refs.form10.reset();
+            window.alert("Done");
         }        
     }
 };
