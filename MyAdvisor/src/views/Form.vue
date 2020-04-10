@@ -11,8 +11,8 @@
                         <v-form ref="form" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="name1" label="Name" v-model="name1" required>
-                            </v-text-field>
+                            <v-select v-model="dept" :items="depts" label="Department" @input="$v.dept.$touch()" @blur="$v.dept.$touch()">
+                            </v-select>
                             </v-flex>
                             <v-flex xs6>
                             <v-text-field name="number1" label="Number" v-model="number1" required>
@@ -183,7 +183,7 @@ export default {
     data() {
         return {
             valid: false,
-            name1: '',
+            dept: null,
             number1: '',
             name2: '',
             number2: '',
@@ -203,13 +203,20 @@ export default {
             number9: '',
             name10: '',
             number10: '',
+            depts: [
+                'CS',
+                'MATH',
+                'ENGLISH',
+                'CHEM',
+              ],
+
         };
     },
     methods: {
         submit() {
-        	let formData = { name1: this.name1, number1: this.number1, name2: this.name2, number2: this.number2, name3: this.name3, number3: this.number3, name4: this.name4, number4: this.number4, name5: this.name5, number5: this.number5, name6: this.name6, number6: this.number6, name7: this.name7, number7: this.number7, name8: this.name8, number8: this.number8, name9: this.name9, number9: this.number9, name10: this.name10, number10: this.number10}
+        	let formData = { dept: this.dept, number1: this.number1, name2: this.name2, number2: this.number2, name3: this.name3, number3: this.number3, name4: this.name4, number4: this.number4, name5: this.name5, number5: this.number5, name6: this.name6, number6: this.number6, name7: this.name7, number7: this.number7, name8: this.name8, number8: this.number8, name9: this.name9, number9: this.number9, name10: this.name10, number10: this.number10}
             console.log(formData);
-	        this.$refs.form.reset();
+	        
             this.$refs.form2.reset();
             this.$refs.form3.reset();
             this.$refs.form4.reset();
