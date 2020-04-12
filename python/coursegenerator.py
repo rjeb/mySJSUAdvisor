@@ -98,7 +98,7 @@ def genSchedules(df, pathIn):
         schedules.append(startDF.loc[index, :])
         #print(startDF.loc[index, :])
     schedules = [x for x in schedules if noConflicts(x)]
-    print(schedules)
+    #print(schedules)
     return schedules
 
 
@@ -146,12 +146,17 @@ def isConflict(startTime1, endTime1, startTime2, endTime2):
             return True
     return False
 
-def rank(dfList, len):
+def rank(dfList, len, alg = None, path = 'solutions.json'):
     #dfList = list of schedules, len = length of returned 'top' schedules
+    if alg is None:
+        pathComponents = re.split('.json', path, 1)
+        for index in range(len):
+            (dfList[index]).to_json(pathComponents[0] + index.__str__() + ".json", orient = 'split')
 
 def main():
     semester = course_structures.Semester(True)
     targets = genSchedules(semester.df1, 'exampleArgs.json')
+    rank(targets, 2)
     #noConflicts(targets)
 
 if __name__ == "__main__":
