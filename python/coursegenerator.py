@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 from itertools import combinations, product
 import functools
+import matplotlib
+import json
+import re
 
 # binary search and basic scheduler as defined by https://www.geeksforgeeks.org/weighted-job-scheduling-log-n-time/
 # classes are defined in total start time since Monday with Monday 12:00 am being 0 time and Sunday 11:59 pm being the latest time
@@ -57,13 +60,14 @@ def getSections(df, dept, classNum):
     rslt_df = dept_df[dept_df['ClassNum'] == classNum]
     return rslt_df
 
-def genSchedules(df, classTargs):
+def genSchedules(df, pathIn):
     """
     :param classTargs: list of tuples (Dept, classNum) which we should generate schedules with
     :return: collection of schedules
     """
+    classTargs = getClassTargets(pathIn)
     sectionsList = []
-    sectionsIndecies = [0]
+    sectionsIndecies = []
     sectionsIndex = 0
     for classTarg in classTargs:
         x, y = classTarg
@@ -78,10 +82,6 @@ def genSchedules(df, classTargs):
         sectionsIndex += len(secDF.index)
         sectionsIndecies.append(sectionsIndex)
 
-    #remove the first and last element of the List for generator function later
-    sectionsIndecies.pop(0)
-
-    #for index in list(combinations(startDF.index, 5)):
     generatorIndex = 0
     generatorList = []
 
@@ -90,21 +90,74 @@ def genSchedules(df, classTargs):
         generatorList.append([*range(generatorIndex, index)])
         generatorIndex = index
 
-
-    #scheduleIndecies = functools.reduce(lambda a,b : list(product(a, b)),generatorList)
     scheduleIndecies = list(product(*generatorList))
 
+    schedules = []
+
     for index in scheduleIndecies:
-        print(startDF.loc[index, :])
-        print('\n')
-        #print(scheduleIndecies)
-    return startDF
+        schedules.append(startDF.loc[index, :])
+        #print(startDF.loc[index, :])
+    schedules = [x for x in schedules if noConflicts(x)]
+    #print(schedules)
+    return schedules
+
+
+def showSchedules(schedules):
+    #todo return a list of schedules as a png
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    colors = ['pink', 'lightgreen', 'lightblue', 'wheat', 'salmon']
+
+def parseJson(jsonInput):
+    with open(jsonInput) as f:
+        data = json.load(f)
+    return data
+
+def getClassTargets(jsonPath):
+    classDict = parseJson(jsonPath)
+    values = list(classDict.values())
+    values = [x for x in values if x != '']
+    it = iter(values)
+    rtn = list(zip(it, it))
+    return(rtn)
+
+def noConflicts(scheduleDF):
+    dayVals = {'M': 0, 'T': 2400, 'W': 4800, 'R': 7200, 'F': 9600}
+    times = []
+    for index, row in scheduleDF.iterrows():
+        if (dayVals.__contains__(row["Days"][0:1]) is True): #check if class is not online
+            times.append((int(row["StartTime"]) + dayVals.get(row["Days"][0:1]), int(row["EndTime"]) + dayVals.get(row["Days"][0:1])))
+            if (dayVals.__contains__(row["Days"][1:2]) is True): #check if class has multiple days
+                times.append((int(row["StartTime"]) + dayVals.get(row["Days"][1:2]), int(row["EndTime"]) + dayVals.get(row["Days"][1:2])))
+            #print(row["StartTime"], row["EndTime"], dayVals.get(row["Days"][1:2]))
+    checkTimes = combinations(times, 2)
+    for checks in checkTimes:
+        (s1, e1), (s2, e2) = checks
+        if isConflict(s1, e1, s2, e2):
+            return False
+    #print(times)
+    return True
+
+def isConflict(startTime1, endTime1, startTime2, endTime2):
+    if (startTime1 < startTime2):
+        if (endTime1 > startTime2):
+            return True
+    else:
+        if (endTime2 > startTime1):
+            return True
+    return False
+
+def rank(dfList, len, alg = None, path = 'solutions.json'):
+    #dfList = list of schedules, len = length of returned 'top' schedules
+    if alg is None:
+        pathComponents = re.split('.json', path, 1)
+        for index in range(len):
+            (dfList[index]).to_json(pathComponents[0] + index.__str__() + ".json", orient = 'split')
 
 def main():
     semester = course_structures.Semester(True)
-    classTargets = [("CS", "161"), ("CS", "160"), ("CS", "154"), ("CS", "147")]
-    targets = genSchedules(semester.df1, classTargets)
-    print(targets)
+    targets = genSchedules(semester.df1, 'exampleArgs.json')
+    rank(targets, 2)
+    #noConflicts(targets)
 
 if __name__ == "__main__":
     main()
