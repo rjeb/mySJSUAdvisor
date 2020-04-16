@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid class="brown lighten-4">
+    <v-container fluid class="#f6eedf">
         <v-container grid-list-lg>
         <center>
             <img alt="Adivisor logo" src="./logoLatest.png" align="middle">
