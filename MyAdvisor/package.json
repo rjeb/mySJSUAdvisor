@@ -13,7 +13,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
     "axios": "^0.18.0",
-    "firebase": "^6.4.2",
+    "firebase": "^7.14.0",
     "vue": "^2.5.17",
     "vue-localstorage": "^0.6.2",
     "vue-router": "^3.0.1",
