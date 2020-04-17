@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         submit() {
-        	const data = JSON.stringify({name: this.name1, number: this.number1});
+        	const data = JSON.stringify({name:this.name1,number:this.number1});
             localStorage.setItem('todos', data);
             console.log(data);
 	        this.$refs.form.reset();
