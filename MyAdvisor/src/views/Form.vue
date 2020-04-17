@@ -124,7 +124,6 @@ export default {
         submit() {
             const data = JSON.stringify({dept1:this.dept1,number1:this.number1,dept2:this.dept2,number2:this.number2,dept3:this.dept3,number3:this.number3,dept4:this.dept4,number4:this.number4,dept5:this.dept5,number5:this.number5});
             localStorage.setItem('news', data);
-            console.log(data);
             this.$refs.form.reset();
             this.$refs.form2.reset();
             this.$refs.form3.reset();
@@ -136,6 +135,7 @@ export default {
                 .ref('Classes')
                 .push(data);
             
+            console.log("Uploaded to FB");
         }
     }
 };
