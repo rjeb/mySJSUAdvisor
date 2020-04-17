@@ -42,24 +42,25 @@
 <script>
 import axios from 'axios';
 
-
 export default {
     name: 'Form',
     data() {
         return {
             valid: false,
-            name1: '',
-            number1: ''
+            email: '',
+            password: ''
 
         };
     },
     methods: {
         submit() {
-        	const data = JSON.stringify({name: this.name1, number: this.number1});
-            localStorage.setItem('todos', data);
-            console.log(data);
-	        this.$refs.form.reset();
-            window.alert(data);
+        	//const data = JSON.stringify({name: this.name1, number: this.number1});
+            //localStorage.setItem('todos', data);
+            //console.log(data);
+	        //this.$refs.form.reset();
+            //window.alert(data);
+
+            
         }
     }
 };

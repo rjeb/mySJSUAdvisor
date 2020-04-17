@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         recipes: [],
+        items: [],
         apiUrl: 'https://api.edamam.com/search',
         user: null,
         isAuthenticated: false,
@@ -102,7 +103,7 @@ export default new Vuex.Store({
         addRecipe({ state }, payload) {
             firebase
                 .database()
-                .ref('users')
+                .ref('Classes')
                 .child(state.user.user.uid)
                 .push(payload.recipe.label);
         },
