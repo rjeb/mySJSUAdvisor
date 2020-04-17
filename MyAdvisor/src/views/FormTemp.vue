@@ -41,25 +41,29 @@
 
 <script>
 import axios from 'axios';
+import firebase from 'firebase';
 
 export default {
     name: 'Form',
     data() {
         return {
             valid: false,
-            email: '',
-            password: ''
+            name1: '',
+            number1: ''
 
         };
     },
     methods: {
         submit() {
-        	//const data = JSON.stringify({name: this.name1, number: this.number1});
-            //localStorage.setItem('todos', data);
-            //console.log(data);
-	        //this.$refs.form.reset();
-            //window.alert(data);
-
+        	const data = JSON.stringify({name: this.name1, number: this.number1});
+            localStorage.setItem('todos', data);
+            console.log(data);
+	        this.$refs.form.reset();
+            window.alert(data);
+            firebase
+                .database()
+                .ref('Classes')
+                .push(data);
             
         }
     }

@@ -2,13 +2,15 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import router from '@/router';
+import firebase from 'firebase';
+
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
         recipes: [],
-        items: [],
+        data: [],
         apiUrl: 'https://api.edamam.com/search',
         user: null,
         isAuthenticated: false,
@@ -26,6 +28,9 @@ export default new Vuex.Store({
         },
         setUserRecipes(state, payload) {
             state.userRecipes = payload;
+        },
+        setData(state, payload) {
+            state.data = payload;
         }
     },
     actions: {
@@ -104,8 +109,7 @@ export default new Vuex.Store({
             firebase
                 .database()
                 .ref('Classes')
-                .child(state.user.user.uid)
-                .push(payload.recipe.label);
+                .push(data);
         },
         getUserRecipes({ state, commit }) {
             return firebase
