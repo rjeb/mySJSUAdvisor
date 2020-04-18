@@ -187,15 +187,53 @@ def writeToProfFile():
     pathlib.Path
     df.to_csv("Professors.csv", index=False, header=True)
 
+#given a prof csv and classes csv, add a column to the class csv with the appropriate professor rating
+def writeProfToClass(profpath, classpath):
+    tmp = pd.read_csv(classpath)
+    dfclass = pd.DataFrame(tmp)
+    tmp = pd.read_csv(profpath)
+    dfprof = pd.DataFrame(tmp)
+
+    print(dfclass)
+    print(dfprof)
+
+
+    scoreColumn = []
+    for row in dfclass.iterrows():
+        profStr = row[1][9].__str__()
+        profReg = re.split(' ', profStr)
+        profHit = dfprof[dfprof['Name'].str.startswith(profReg[0]) & dfprof['Name'].str.endswith(profReg[len(profReg) -1])]
+        counter = 0
+        deptStr = row[1][0].__str__()
+
+
+        #if multiple hits are found, recursively reduce based on matched characters with department of target class
+        if(len(profHit) > 1 and len(deptStr) > 0):
+            while (len(profHit) > 1 and counter <= len(deptStr)-1): # if there is more than 2 professors found that matches (initial - lastname)
+                profHit = profHit[profHit['Department'].str.contains(deptStr[counter])]
+                counter += 1
+        if (len(profHit) >= 1):
+            scoreColumn.append(profHit['Rating'].values[0])
+        else:
+            scoreColumn.append(2.49)
+        #print(profHit)
+    dfclass['Rating'] = scoreColumn
+    dfclass.to_csv(classpath, index=False, header=True)
 def main():
 
     # Get all the relevant links referenced from the seed SEED (top_url)
     fall = 'http://info.sjsu.edu/web-dbgen/schedules-fall/all-departments.html'
     spring = 'http://info.sjsu.edu/web-dbgen/schedules-spring/all-departments.html'
+    classPath = 'classesFall.csv'
+    profPath = 'Professors.csv'
+
+    writeProfToClass(profPath, classPath)
+
 
     # Get the semester to parse from the user and returns a list of
     # departments from that semester
     # semester = input('Which semester would you like to view? ')
+    """
     semester = 'spring'
     if semester == 'fall':
         dept_links = get_links(fall, 2)
@@ -207,6 +245,7 @@ def main():
     # Go through each department link and returns a list of links for each course from the respective department
     course_links = [get_links(link, 2) for link in dept_links]
 
+    """
 
     #writeToDeptFile(False) #writes all classes to classes.csv
     #writeToProfFile()
