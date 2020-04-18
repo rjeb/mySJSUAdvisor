@@ -7,6 +7,9 @@ import functools
 import matplotlib
 import json
 import re
+import matplotlib.pyplot as plt
+from pandas.plotting import table
+import six
 
 # binary search and basic scheduler as defined by https://www.geeksforgeeks.org/weighted-job-scheduling-log-n-time/
 # classes are defined in total start time since Monday with Monday 12:00 am being 0 time and Sunday 11:59 pm being the latest time
@@ -153,10 +156,41 @@ def rank(dfList, len, alg = None, path = 'solutions.json'):
         for index in range(len):
             (dfList[index]).to_json(pathComponents[0] + index.__str__() + ".json", orient = 'split')
 
+def rankPng(dfList, len, alg = None, path = 'solutions.png'):
+    # dfList = list of schedules, len = length of returned 'top' schedules
+    if alg is None:
+        pathComponents = re.split('.png', path, 1)
+        for index in range(len):
+            render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
+            plt.savefig(pathComponents[0] + index.__str__() + ".png")
+
+def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
+                     header_color='#40466e', row_colors=['#f1f1f2', 'w'], edge_color='w',
+                     bbox=[0, 0, 1, 1], header_columns=0,
+                     ax=None, **kwargs):
+    if ax is None:
+        size = (np.array(data.shape[::-1]) + np.array([0, 1])) * np.array([col_width, row_height])
+        fig, ax = plt.subplots(figsize=size)
+        ax.axis('off')
+
+    mpl_table = ax.table(cellText=data.values, bbox=bbox, colLabels=data.columns, **kwargs)
+
+    mpl_table.auto_set_font_size(True)
+    mpl_table.set_fontsize(font_size)
+
+    for k, cell in six.iteritems(mpl_table._cells):
+        cell.set_edgecolor(edge_color)
+        if k[0] == 0 or k[1] < header_columns:
+            cell.set_text_props(weight='bold', color='w')
+            cell.set_facecolor(header_color)
+        else:
+            cell.set_facecolor(row_colors[k[0] % len(row_colors)])
+    return ax
+
 def main():
     semester = course_structures.Semester(True)
     targets = genSchedules(semester.df1, 'exampleArgs.json')
-    rank(targets, 2)
+    rankPng(targets, 2)
     #noConflicts(targets)
 
 if __name__ == "__main__":
