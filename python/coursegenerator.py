@@ -163,6 +163,13 @@ def rankPng(dfList, len, alg = None, path = 'solutions.png'):
         for index in range(len):
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
+    elif alg is 1:
+        dfList = sorted(dfList, key = lambda x: -x['Rating'].sum())
+        pathComponents = re.split('.png', path, 1)
+        for index in range(len):
+            render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
+            plt.savefig(pathComponents[0] + index.__str__() + ".png")
+
 
 def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
                      header_color='#40466e', row_colors=['#f1f1f2', 'w'], edge_color='w',
@@ -190,7 +197,7 @@ def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
 def main():
     semester = course_structures.Semester(True)
     targets = genSchedules(semester.df1, 'exampleArgs.json')
-    rankPng(targets, 2)
+    rankPng(targets, 2, alg = 1)
     #noConflicts(targets)
 
 if __name__ == "__main__":
