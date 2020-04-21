@@ -100,7 +100,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import firebase from 'firebase';
 
 export default {
@@ -122,7 +121,7 @@ export default {
     },
     methods: {
         submit() {
-            const data = JSON.stringify({dept1:this.dept1,number1:this.number1,dept2:this.dept2,number2:this.number2,dept3:this.dept3,number3:this.number3,dept4:this.dept4,number4:this.number4,dept5:this.dept5,number5:this.number5});
+            const data = JSON.stringify({className1:this.dept1,classNumber1:this.number1,className2:this.dept2,classNumber2:this.number2,className3:this.dept3,classNumber3:this.number3,className4:this.dept4,classNumber4:this.number4,className5:this.dept5,classNumber5:this.number5});
             localStorage.setItem('news', data);
             this.$refs.form.reset();
             this.$refs.form2.reset();
@@ -134,8 +133,6 @@ export default {
                 .database()
                 .ref('Classes')
                 .push(data);
-            
-            console.log("Uploaded to FB");
         }
     }
 };
