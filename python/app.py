@@ -1,15 +1,55 @@
+
+import coursegenerator
+import course_structures
+import pyrebase
+import json
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-# Fetch the service account key JSON file contents
+config = {
+  "apiKey": "AIzaSyDyJ08AU94tm8Qi9nownWCSN1tLw3Oj4Kk",
+  "authDomain": "advisor-c0b7d.firebaseapp.com",
+  "databaseURL": "https://advisor-c0b7d.firebaseio.com",
+  "storageBucket": "advisor-c0b7d.appspot.com",
+  "serviceAccount": "advisor-c0b7d-firebase-adminsdk-nx4r4-adc5a434c9.json"
+}
+
+"""firebase admin credentials
 cred = credentials.Certificate('advisor-c0b7d-firebase-adminsdk-nx4r4-adc5a434c9.json')
 
 # Initialize the app with a service account, granting admin privileges
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://advisor-c0b7d.firebaseio.com/'
+    'databaseURL': 'https://advisor-c0b7d.firebaseio.com'
 })
+"""
 
-# As an admin, the app has access to read and write all data, regradless of Security Rules
-ref = db.reference('Classes/-M5OvQBHv4W3wrWdpmOy')
-print(ref.get())
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
+db1 = firebase.database()
+
+def on_snapshot(doc_snapshot, changes, read_time):
+    for doc in doc_snapshot:
+        gensched()
+
+def gensched():
+    classargs = db1.child("Classes/classargs/").get()
+    semArg = classargs.val()['type']
+    if semArg == 'spring':
+        semester = course_structures.Semester(True)
+    else:
+        semester = course_structures.Semester(False)
+    with open('classargs.json', 'w') as json_file:
+        json.dump(classargs.val(), json_file)
+    targets = coursegenerator.genSchedules(semester.df1, 'classargs.json')
+    coursegenerator.rankPng(targets, 3, alg=1)
+
+    path_on_cloud = "Schedules/solutions0.png"
+    path_local = "solutions0.png"
+    storage.child(path_on_cloud).put(path_local)
+    path_on_cloud = "Schedules/solutions1.png"
+    path_local = "solutions1.png"
+    storage.child(path_on_cloud).put(path_local)
+    path_on_cloud = "Schedules/solutions2.png"
+    path_local = "solutions2.png"
+    storage.child(path_on_cloud).put(path_local)

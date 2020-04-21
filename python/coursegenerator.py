@@ -117,7 +117,18 @@ def parseJson(jsonInput):
 
 def getClassTargets(jsonPath):
     classDict = parseJson(jsonPath)
-    values = list(classDict.values())
+    values = (classDict['className1'], classDict['classNumber1'],
+              classDict['className2'], classDict['classNumber2'],
+              classDict['className3'], classDict['classNumber3'],
+              classDict['className4'], classDict['classNumber4'],
+              classDict['className5'], classDict['classNumber5'],
+              classDict['className6'], classDict['classNumber6'],
+              classDict['className7'], classDict['classNumber7'],
+              classDict['className8'], classDict['classNumber8'],
+              classDict['className9'], classDict['classNumber9'],
+              classDict['className10'], classDict['classNumber10'],
+             )
+    #values = list(classDict.values())
     values = [x for x in values if x != '']
     it = iter(values)
     rtn = list(zip(it, it))
