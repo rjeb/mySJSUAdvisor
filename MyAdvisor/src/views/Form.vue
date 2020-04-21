@@ -26,7 +26,7 @@
                         <v-form ref="form2" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="className2" label="Department" v-model="className1" required>
+                            <v-text-field name="className2" label="Department" v-model="className2" required>
                             </v-text-field>
                             </v-flex>
                             <v-flex xs6>
@@ -124,23 +124,25 @@ export default {
     methods: {
         submit() {
             this.classes.className1 = this.className1;
-            window.alert("Done");
-            firebase
-                .database()
-                .ref('Classes')
-                .push(this.classes);
- 
-/*
-
-const data = JSON.stringify({className1:this.dept1,classNumber1:this.number1,className2:this.dept2,classNumber2:this.number2,className3:this.dept3,classNumber3:this.number3,className4:this.dept4,classNumber4:this.number4,className5:this.dept5,classNumber5:this.number5});
-            localStorage.setItem('news', data);
+            this.classes.classNumber1 = this.classNumber1;
+            this.classes.className2 = this.className2;
+            this.classes.classNumber2 = this.classNumber2;
+            this.classes.className3 = this.className3;
+            this.classes.classNumber3 = this.classNumber3;
+            this.classes.className4 = this.className4;
+            this.classes.classNumber4 = this.classNumber4;
+            this.classes.className5 = this.className5;
+            this.classes.classNumber5 = this.classNumber5;
             this.$refs.form.reset();
             this.$refs.form2.reset();
             this.$refs.form3.reset();
             this.$refs.form4.reset();
             this.$refs.form5.reset();
-            window.alert(data);
-*/
+            window.alert("Done");
+            firebase
+                .database()
+                .ref('Classes')
+                .push(this.classes);
        }
     }
 };
