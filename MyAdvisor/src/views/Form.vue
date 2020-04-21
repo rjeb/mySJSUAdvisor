@@ -117,7 +117,8 @@ export default {
                 className4: '',
                 classNumber4: '',
                 className5: '',
-                classNumber5: ''
+                classNumber5: '',
+                type: ''
             }
         };
     },
@@ -133,6 +134,7 @@ export default {
             this.classes.classNumber4 = this.classNumber4;
             this.classes.className5 = this.className5;
             this.classes.classNumber5 = this.classNumber5;
+            this.classes.type = "spring";
             this.$refs.form.reset();
             this.$refs.form2.reset();
             this.$refs.form3.reset();
@@ -142,6 +144,7 @@ export default {
             firebase
                 .database()
                 .ref('Classes')
+                .child('classargs')
                 .push(this.classes);
        }
     }
