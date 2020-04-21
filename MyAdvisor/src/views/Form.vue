@@ -11,11 +11,11 @@
                         <v-form ref="form" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="dept1" label="Department" v-model="dept1" required>
+                            <v-text-field name="className1" label="Department" v-model="className1" required>
                             </v-text-field>
                             </v-flex>
                             <v-flex xs6>
-                            <v-text-field name="number1" label="Number" v-model="number1" required>
+                            <v-text-field name="classNumber1" label="Number" v-model="classNumber1" required>
                             </v-text-field>
                             </v-flex>
                           </v-layout>
@@ -26,11 +26,11 @@
                         <v-form ref="form2" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="dept2" label="Department" v-model="dept2" required>
+                            <v-text-field name="className2" label="Department" v-model="className1" required>
                             </v-text-field>
                             </v-flex>
                             <v-flex xs6>
-                            <v-text-field name="number2" label="Number" v-model="number2" required>
+                            <v-text-field name="classNumber2" label="Number" v-model="classNumber2" required>
                             </v-text-field>
                             </v-flex>
                           </v-layout>
@@ -41,11 +41,11 @@
                         <v-form ref="form3" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="dept3" label="Department" v-model="dept3" required>
+                            <v-text-field name="className3" label="Department" v-model="className3" required>
                             </v-text-field>
                             </v-flex>
                             <v-flex xs6>
-                            <v-text-field name="number3" label="Number" v-model="number3" required>
+                            <v-text-field name="classNumber3" label="Number" v-model="classNumber3" required>
                             </v-text-field>
                             </v-flex>
                           </v-layout>
@@ -56,11 +56,11 @@
                         <v-form ref="form4" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="dept4" label="Department" v-model="dept4" required>
+                            <v-text-field name="className4" label="Department" v-model="className4" required>
                             </v-text-field>
                             </v-flex>
                             <v-flex xs6>
-                            <v-text-field name="number4" label="Number" v-model="number4" required>
+                            <v-text-field name="classNumber4" label="Number" v-model="classNumber4" required>
                             </v-text-field>
                             </v-flex>
                           </v-layout>
@@ -71,11 +71,11 @@
                         <v-form ref="form5" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
-                            <v-text-field name="dept5" label="Department" v-model="dept5" required>
+                            <v-text-field name="className5" label="Department" v-model="className5" required>
                             </v-text-field>
                             </v-flex>
                             <v-flex xs6>
-                            <v-text-field name="number5" label="Number" v-model="number5" required>
+                            <v-text-field name="classNumber5" label="Number" v-model="classNumber5" required>
                             </v-text-field>
                             </v-flex>
                           </v-layout>
@@ -106,22 +106,33 @@ export default {
     name: 'Form',
     data() {
         return {
-            valid: false,
-            dept1: '',
-            number1: '',
-            dept2: '',
-            number2: '',
-            dept3: '',
-            number3: '',
-            dept4: '',
-            number4: '',
-            dept5: '',
-            number5: ''
+            classes: {
+                valid: false,
+                className1: '',
+                classNumber1: '',
+                className2: '',
+                classNumber2: '',
+                className3: '',
+                classNumber3: '',
+                className4: '',
+                classNumber4: '',
+                className5: '',
+                classNumber5: ''
+            }
         };
     },
     methods: {
         submit() {
-            const data = JSON.stringify({className1:this.dept1,classNumber1:this.number1,className2:this.dept2,classNumber2:this.number2,className3:this.dept3,classNumber3:this.number3,className4:this.dept4,classNumber4:this.number4,className5:this.dept5,classNumber5:this.number5});
+            this.classes.className1 = this.className1;
+            window.alert("Done");
+            firebase
+                .database()
+                .ref('Classes')
+                .push(this.classes);
+ 
+/*
+
+const data = JSON.stringify({className1:this.dept1,classNumber1:this.number1,className2:this.dept2,classNumber2:this.number2,className3:this.dept3,classNumber3:this.number3,className4:this.dept4,classNumber4:this.number4,className5:this.dept5,classNumber5:this.number5});
             localStorage.setItem('news', data);
             this.$refs.form.reset();
             this.$refs.form2.reset();
@@ -129,11 +140,8 @@ export default {
             this.$refs.form4.reset();
             this.$refs.form5.reset();
             window.alert(data);
-            firebase
-                .database()
-                .ref('Classes')
-                .push(data);
-        }
+*/
+       }
     }
 };
 </script>
