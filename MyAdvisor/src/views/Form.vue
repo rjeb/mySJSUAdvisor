@@ -145,7 +145,7 @@ export default {
                 .database()
                 .ref('Classes')
                 .child('classargs')
-                .push(this.classes);
+                .set(this.classes);
        }
     }
 };
