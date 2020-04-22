@@ -9,6 +9,16 @@
                     </v-toolbar>
                     <v-card-text>
                         <v-form ref="form" v-model="valid" lazy-validation>
+                           <v-col cols="6">
+                            <v-select
+                              v-model="type"
+                              :items="types"
+                              menu-props="auto"
+                              label="Select"
+                              hide-details
+                              single-line
+                            ></v-select>
+                          </v-col>
                           <v-layout row wrap>
                             <v-flex xs6>
                             <v-text-field name="className1" label="Department" v-model="className1" required>
@@ -101,11 +111,11 @@
 
 <script>
 import firebase from 'firebase';
-
 export default {
     name: 'Form',
     data() {
         return {
+            types: ['Fall', 'Spring'],
             classes: {
                 valid: false,
                 className1: '',
@@ -118,7 +128,7 @@ export default {
                 classNumber4: '',
                 className5: '',
                 classNumber5: '',
-                type: ''
+                type: null
             }
         };
     },
@@ -134,7 +144,7 @@ export default {
             this.classes.classNumber4 = this.classNumber4;
             this.classes.className5 = this.className5;
             this.classes.classNumber5 = this.classNumber5;
-            this.classes.type = "spring";
+            this.classes.type = this.type;
             this.$refs.form.reset();
             this.$refs.form2.reset();
             this.$refs.form3.reset();
