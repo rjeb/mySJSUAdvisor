@@ -8,8 +8,9 @@
                         <v-toolbar-title>Classes Form</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
-                        <v-form ref="form" v-model="valid" lazy-validation>
-                           <v-col cols="6">
+                     <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-layout row wrap>
+                            <v-flex xs6>
                             <v-select
                               v-model="type"
                               :items="types"
@@ -18,7 +19,11 @@
                               hide-details
                               single-line
                             ></v-select>
-                          </v-col>
+                          </v-flex>
+                          </v-layout>
+                        </v-form>
+
+                        <v-form ref="form1" v-model="valid" lazy-validation>
                           <v-layout row wrap>
                             <v-flex xs6>
                             <v-text-field name="className1" label="Department" v-model="className1" required>
@@ -146,6 +151,7 @@ export default {
             this.classes.classNumber5 = this.classNumber5;
             this.classes.type = this.type;
             this.$refs.form.reset();
+            this.$refs.form1.reset();
             this.$refs.form2.reset();
             this.$refs.form3.reset();
             this.$refs.form4.reset();
