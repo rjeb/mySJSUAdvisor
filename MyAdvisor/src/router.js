@@ -16,6 +16,11 @@ const router = new Router({
             path: '/form',
             name: 'form',
             component: () => import('./views/Form.vue')
+        },
+        {
+            path: '/schedules',
+            name: 'schedules',
+            component: () => import('./views/Schedules.vue')
         }
     ]
 });

@@ -97,15 +97,12 @@
                         </v-form>
 
                     </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="primary"
-                            @click="submit"
-                            data-cy="joinSubmitBtn"
-                            >Submit</v-btn
-                        >
-                    </v-card-actions>
+                    <v-btn
+                        color="primary"
+                        @click="submit"
+                        data-cy="joinSubmitBtn"
+                        >Submit</v-btn
+                    >
                     <center>
                         <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions0.png?alt=media&token=09ffc1ce-efb7-4893-91bf-14260ffedf80" align="middle" v-if='showImage'> 
                     </center> 
@@ -115,15 +112,12 @@
                     <center>
                         <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions2.png?alt=media&token=c26390e1-634d-40a3-9983-fca1c5ff3b8c" align="middle" v-if='showImage'>
                     </center>       
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="primary"
-                            @click="recieve"
-                            data-cy="joinSubmitBtn"
-                            >Recieve Schedule</v-btn
-                        >
-                    </v-card-actions>             
+                    <v-btn
+                        color="primary"
+                        to="/schedules"
+                        data-cy="formBtn"
+                        >See YOUR SCHEDULE</v-btn
+                    >             
                 </v-card>
             </v-flex>
         </v-layout>
@@ -183,6 +177,7 @@ export default {
                 .set(this.classes);
        },
        recieve() {
+       /*
             var storage = firebase.storage();
             var storageRef =  storage.ref();
             storageRef.child('Schedules/').listAll().then(function(result){
@@ -191,6 +186,7 @@ export default {
                     });
                 });
             });
+        */
             //window.alert(this.imageURL); 
             this.showImage = !this.showImage;
        },
