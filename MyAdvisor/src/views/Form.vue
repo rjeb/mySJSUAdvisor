@@ -106,6 +106,15 @@
                             >Submit</v-btn
                         >
                     </v-card-actions>
+                    <center>
+                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
+                    </center>       
+                    <center>
+                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
+                    </center>       
+                    <center>
+                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
+                    </center>       
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
@@ -114,10 +123,7 @@
                             data-cy="joinSubmitBtn"
                             >Recieve Schedule</v-btn
                         >
-                    </v-card-actions> 
-                    <center>
-                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
-                    </center>                   
+                    </v-card-actions>             
                 </v-card>
             </v-flex>
         </v-layout>
@@ -182,13 +188,13 @@ export default {
             var storageRef =  storage.ref();
             storageRef.child('Schedules/').listAll().then(function(result){
                 result.items.forEach(function(imageRef){
-                    console.log(doc.data());
                     imageRef.getDownloadURL().then(function(url){
                         //this.imageURL = url;
                     });
                 });
             });
             //window.alert(this.imageURL); 
+            this.showImage = !this.showImage;
        }
     }
 };
