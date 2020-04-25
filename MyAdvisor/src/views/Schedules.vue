@@ -8,7 +8,14 @@
          </center>       
          <center>
             <img class="zoom" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions2.png?alt=media&token=c26390e1-634d-40a3-9983-fca1c5ff3b8c" align="middle" v-if='showImage'>
-         </center>       
+         </center> 
+         <center>      
+         <v-btn
+            color="primary"
+            to="/"
+            data-cy="formBtn"
+            >BACK TO HOME PAGE</v-btn> 
+          </center>
     </div>
 </template>
 
@@ -32,6 +39,7 @@ export default {
 img {
  	width: 100%;
   	height: 100%;
+
 }
 .zoom {
   padding: 50px;
