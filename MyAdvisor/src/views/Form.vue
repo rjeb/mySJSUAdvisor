@@ -107,13 +107,13 @@
                         >
                     </v-card-actions>
                     <center>
-                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
+                        <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions0.png?alt=media&token=09ffc1ce-efb7-4893-91bf-14260ffedf80" align="middle" v-if='showImage'> 
+                    </center> 
+                    <center>
+                        <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions1.png?alt=media&token=7c018506-ba5b-41b3-b07b-ed5d5568ab91" align="middle" v-if='showImage'>
                     </center>       
                     <center>
-                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
-                    </center>       
-                    <center>
-                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
+                        <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions2.png?alt=media&token=c26390e1-634d-40a3-9983-fca1c5ff3b8c" align="middle" v-if='showImage'>
                     </center>       
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -138,7 +138,7 @@ export default {
     data() {
         return {
             types: ['Fall', 'Spring'],
-            imageURL: '',
+            url : '',
             showImage: false,
             classes: {
                 valid: false,
@@ -183,21 +183,27 @@ export default {
                 .set(this.classes);
        },
        recieve() {
-            window.alert("Recieved");
             var storage = firebase.storage();
             var storageRef =  storage.ref();
             storageRef.child('Schedules/').listAll().then(function(result){
                 result.items.forEach(function(imageRef){
                     imageRef.getDownloadURL().then(function(url){
-                        //this.imageURL = url;
                     });
                 });
             });
             //window.alert(this.imageURL); 
             this.showImage = !this.showImage;
+       },
+       showPhoto() {
+            const imgUrl = 'https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions0.png?alt=media&token=09ffc1ce-efb7-4893-91bf-14260ffedf80';
+            return imgUrl;
        }
     }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.images {
+    width: 100%;
+}
+</style>
