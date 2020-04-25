@@ -106,18 +106,7 @@
                             >Submit</v-btn
                         >
                     </v-card-actions>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="primary"
-                            @click="recieve"
-                            data-cy="joinSubmitBtn"
-                            >Recieve Schedule</v-btn
-                        >
-                    </v-card-actions> 
-                    <center>
-                        <img alt="Adivisor logo" src="./logoLatest.png" align="middle" v-if='showImage'>
-                    </center>                   
+                    
                 </v-card>
             </v-flex>
         </v-layout>
@@ -132,8 +121,6 @@ export default {
     data() {
         return {
             types: ['Fall', 'Spring'],
-            imageURL: '',
-            showImage: false,
             classes: {
                 valid: false,
                 className1: '',
@@ -175,20 +162,6 @@ export default {
                 .ref('Classes')
                 .child('classargs')
                 .set(this.classes);
-       },
-       recieve() {
-            window.alert("Recieved");
-            var storage = firebase.storage();
-            var storageRef =  storage.ref();
-            storageRef.child('Schedules/').listAll().then(function(result){
-                result.items.forEach(function(imageRef){
-                    console.log(doc.data());
-                    imageRef.getDownloadURL().then(function(url){
-                        //this.imageURL = url;
-                    });
-                });
-            });
-            //window.alert(this.imageURL); 
        }
     }
 };
