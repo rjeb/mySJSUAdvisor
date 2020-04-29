@@ -1,5 +1,8 @@
 <template>
     <v-container fluid class="#f6eedf">
+      <center>
+          <h1>Schedules in order of rating from top to bottom</h1>
+      </center>
     	<center>
          	<img class="zoom" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions0.png?alt=media&token=09ffc1ce-efb7-4893-91bf-14260ffedf80" align="left" v-if='showImage'> 
          </center>

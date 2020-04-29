@@ -15,7 +15,7 @@
                               v-model="type"
                               :items="types"
                               menu-props="auto"
-                              label="Select"
+                              label="Semester"
                               hide-details
                               single-line
                             ></v-select>
