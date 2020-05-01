@@ -3,9 +3,10 @@ import coursegenerator
 import course_structures
 import pyrebase
 import json
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
+from datetime import datetime
+#import firebase_admin
+#from firebase_admin import credentials
+#from firebase_admin import db
 
 config = {
   "apiKey": "AIzaSyDyJ08AU94tm8Qi9nownWCSN1tLw3Oj4Kk",
@@ -35,7 +36,7 @@ def on_snapshot(doc_snapshot, changes, read_time):
 def gensched():
     classargs = db1.child("Classes/classargs/").get()
     semArg = classargs.val()['type']
-    if semArg == 'spring':
+    if semArg == 'Spring':
         semester = course_structures.Semester(True)
     else:
         semester = course_structures.Semester(False)
@@ -53,3 +54,13 @@ def gensched():
     path_on_cloud = "Schedules/solutions2.png"
     path_local = "solutions2.png"
     storage.child(path_on_cloud).put(path_local)
+
+def stream_handler(msg):
+    gensched()
+    print("updated")
+
+def main():
+    my_stream = db1.child("Classes/classargs/").stream(stream_handler)
+
+if __name__ == "__main__":
+    main()

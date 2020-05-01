@@ -122,14 +122,16 @@ def getClassTargets(jsonPath):
               classDict['className3'], classDict['classNumber3'],
               classDict['className4'], classDict['classNumber4'],
               classDict['className5'], classDict['classNumber5'],
+              """
               classDict['className6'], classDict['classNumber6'],
               classDict['className7'], classDict['classNumber7'],
               classDict['className8'], classDict['classNumber8'],
               classDict['className9'], classDict['classNumber9'],
               classDict['className10'], classDict['classNumber10'],
+              """
              )
     #values = list(classDict.values())
-    values = [x for x in values if x != '']
+    values = [x.strip(' ') for x in values if x != '']
     it = iter(values)
     rtn = list(zip(it, it))
     return(rtn)
@@ -160,24 +162,62 @@ def isConflict(startTime1, endTime1, startTime2, endTime2):
             return True
     return False
 
-def rank(dfList, len, alg = None, path = 'solutions.json'):
+def getCloseness(scheduleDF):
+    dayVals = {'M': 0, 'T': 2400, 'W': 4800, 'R': 7200, 'F': 9600}
+    times = []
+    rtn = 0.0
+    classCount = 0 #tracks how many instances of in-person classes we have
+    for index, row in scheduleDF.iterrows():
+        if (dayVals.__contains__(row["Days"][0:1]) is True): #check if class is not online
+            times.append((int(row["StartTime"]) + dayVals.get(row["Days"][0:1]), int(row["EndTime"]) + dayVals.get(row["Days"][0:1])))
+            classCount += 1
+            if (dayVals.__contains__(row["Days"][1:2]) is True): #check if class has multiple days
+                times.append((int(row["StartTime"]) + dayVals.get(row["Days"][1:2]), int(row["EndTime"]) + dayVals.get(row["Days"][1:2])))
+                classCount += 1
+            #print(row["StartTime"], row["EndTime"], dayVals.get(row["Days"][1:2]))
+    times = sorted(times, key = lambda x: x[0])
+    maxindex = len(times) - 1
+    for x in range(len(times)):
+        if x != maxindex:
+            diff = times[maxindex - x][0] - times[maxindex - (x + 1)][1] #difference from start time and end time of 2 conseq classes
+            if diff < 1200: #ignoring different days, how close are the classes in the schedule generally?
+                rtn += diff
+            #print(diff)
+        #print(times[maxindex - x])
+    rtn = (rtn / classCount)
+    return rtn
+
+
+def rank(dfList, length, alg = None, path = 'solutions.json'):
     #dfList = list of schedules, len = length of returned 'top' schedules
+    if len(dfList) < length:
+        print("invalid arguments")
+        return
     if alg is None:
         pathComponents = re.split('.json', path, 1)
-        for index in range(len):
+        for index in range(length):
             (dfList[index]).to_json(pathComponents[0] + index.__str__() + ".json", orient = 'split')
 
-def rankPng(dfList, len, alg = None, path = 'solutions.png'):
+def rankPng(dfList, length, alg = None, path = 'solutions.png'):
+    if len(dfList) < length:
+        print("invalid arguments")
+        return
     # dfList = list of schedules, len = length of returned 'top' schedules
     if alg is None:
         pathComponents = re.split('.png', path, 1)
-        for index in range(len):
+        for index in range(length):
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
     elif alg is 1:
         dfList = sorted(dfList, key = lambda x: -x['Rating'].sum())
         pathComponents = re.split('.png', path, 1)
-        for index in range(len):
+        for index in range(length):
+            render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
+            plt.savefig(pathComponents[0] + index.__str__() + ".png")
+    elif alg is 2:
+        dfList = sorted(dfList, key = lambda x: getCloseness(x))
+        pathComponents = re.split('.png', path, 1)
+        for index in range(length):
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
 
@@ -207,8 +247,8 @@ def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
 
 def main():
     semester = course_structures.Semester(True)
-    targets = genSchedules(semester.df1, 'exampleArgs.json')
-    rankPng(targets, 2, alg = 1)
+    targets = genSchedules(semester.df1, 'classargs.json')
+    rankPng(targets, 3, alg = 1)
     #noConflicts(targets)
 
 if __name__ == "__main__":
