@@ -15,7 +15,7 @@
                               v-model="type"
                               :items="types"
                               menu-props="auto"
-                              label="Semester"
+                              label="Select"
                               hide-details
                               single-line
                             ></v-select>
@@ -97,27 +97,16 @@
                         </v-form>
 
                     </v-card-text>
-                    <v-btn
-                        color="primary"
-                        @click="submit"
-                        data-cy="joinSubmitBtn"
-                        >Submit</v-btn
-                    >
-                    <center>
-                        <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions0.png?alt=media&token=09ffc1ce-efb7-4893-91bf-14260ffedf80" align="middle" v-if='showImage'> 
-                    </center> 
-                    <center>
-                        <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions1.png?alt=media&token=7c018506-ba5b-41b3-b07b-ed5d5568ab91" align="middle" v-if='showImage'>
-                    </center>       
-                    <center>
-                        <img class="images" src="https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions2.png?alt=media&token=c26390e1-634d-40a3-9983-fca1c5ff3b8c" align="middle" v-if='showImage'>
-                    </center>       
-                    <v-btn
-                        color="primary"
-                        to="/schedules"
-                        data-cy="formBtn"
-                        >See YOUR SCHEDULE</v-btn
-                    >             
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="primary"
+                            @click="submit"
+                            data-cy="joinSubmitBtn"
+                            >Submit</v-btn
+                        >
+                    </v-card-actions>
+                    
                 </v-card>
             </v-flex>
         </v-layout>
@@ -132,8 +121,6 @@ export default {
     data() {
         return {
             types: ['Fall', 'Spring'],
-            url : '',
-            showImage: false,
             classes: {
                 valid: false,
                 className1: '',
@@ -175,31 +162,9 @@ export default {
                 .ref('Classes')
                 .child('classargs')
                 .set(this.classes);
-       },
-       recieve() {
-       /*
-            var storage = firebase.storage();
-            var storageRef =  storage.ref();
-            storageRef.child('Schedules/').listAll().then(function(result){
-                result.items.forEach(function(imageRef){
-                    imageRef.getDownloadURL().then(function(url){
-                    });
-                });
-            });
-        */
-            //window.alert(this.imageURL); 
-            this.showImage = !this.showImage;
-       },
-       showPhoto() {
-            const imgUrl = 'https://firebasestorage.googleapis.com/v0/b/advisor-c0b7d.appspot.com/o/Schedules%2Fsolutions0.png?alt=media&token=09ffc1ce-efb7-4893-91bf-14260ffedf80';
-            return imgUrl;
        }
     }
 };
 </script>
 
-<style scoped>
-.images {
-    width: 100%;
-}
-</style>
+<style scoped></style>
