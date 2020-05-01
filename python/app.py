@@ -43,7 +43,7 @@ def gensched():
     with open('classargs.json', 'w') as json_file:
         json.dump(classargs.val(), json_file)
     targets = coursegenerator.genSchedules(semester.df1, 'classargs.json')
-    coursegenerator.rankPng(targets, 3, alg=1)
+    coursegenerator.rankPng(targets, 3, alg = 3, pweight = 3, cweight = 1)
 
     path_on_cloud = "Schedules/solutions0.png"
     path_local = "solutions0.png"

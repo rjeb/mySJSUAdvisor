@@ -184,7 +184,8 @@ def getCloseness(scheduleDF):
                 rtn += diff
             #print(diff)
         #print(times[maxindex - x])
-    rtn = (rtn / classCount)
+    rtn = 1.0 - ((rtn / classCount) / 250) #normalize the value
+    #print(rtn)
     return rtn
 
 
@@ -198,7 +199,7 @@ def rank(dfList, length, alg = None, path = 'solutions.json'):
         for index in range(length):
             (dfList[index]).to_json(pathComponents[0] + index.__str__() + ".json", orient = 'split')
 
-def rankPng(dfList, length, alg = None, path = 'solutions.png'):
+def rankPng(dfList, length, alg = None, path = 'solutions.png', pweight = 1, cweight = 1):
     if len(dfList) < length:
         print("invalid arguments")
         return
@@ -215,9 +216,18 @@ def rankPng(dfList, length, alg = None, path = 'solutions.png'):
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
     elif alg is 2:
-        dfList = sorted(dfList, key = lambda x: getCloseness(x))
+        dfList = sorted(dfList, key = lambda x: -getCloseness(x))
         pathComponents = re.split('.png', path, 1)
         for index in range(length):
+            render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
+            plt.savefig(pathComponents[0] + index.__str__() + ".png")
+    elif alg is 3:
+        #algorithm uses normalized profscore and closeness ranking and given weights of attributes
+        dfList = sorted(dfList, key = lambda x: -((x['Rating'].sum()/ (len(x.index) * 5)) * pweight + getCloseness(x) * cweight))
+        pathComponents = re.split('.png', path, 1)
+        for index in range(length):
+            print ("profscore: " + (dfList[index]['Rating'].sum()/ (len(dfList[index].index) * 5)).__str__())
+            print ("closeness: " + getCloseness(dfList[index]).__str__())
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
 
@@ -248,7 +258,7 @@ def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
 def main():
     semester = course_structures.Semester(True)
     targets = genSchedules(semester.df1, 'classargs.json')
-    rankPng(targets, 3, alg = 1)
+    rankPng(targets, 3, alg = 3, pweight = 3, cweight = 1)
     #noConflicts(targets)
 
 if __name__ == "__main__":
