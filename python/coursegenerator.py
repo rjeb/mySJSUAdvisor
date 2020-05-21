@@ -226,8 +226,12 @@ def rankPng(dfList, length, alg = None, path = 'solutions.png', pweight = 1, cwe
         dfList = sorted(dfList, key = lambda x: -((x['Rating'].sum()/ (len(x.index) * 5)) * pweight + getCloseness(x) * cweight))
         pathComponents = re.split('.png', path, 1)
         for index in range(length):
-            print ("profscore: " + (dfList[index]['Rating'].sum()/ (len(dfList[index].index) * 5)).__str__())
-            print ("closeness: " + getCloseness(dfList[index]).__str__())
+            del dfList[index]['SeatsTaken']
+            del dfList[index]['SeatsTotal']
+            del dfList[index]['ClassCode']
+            del dfList[index]['ClassMode']
+            #print ("profscore: " + (dfList[index]['Rating'].sum()/ (len(dfList[index].index) * 5)).__str__())
+            #print ("closeness: " + getCloseness(dfList[index]).__str__())
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
 
