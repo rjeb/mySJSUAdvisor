@@ -1,78 +1,30 @@
-import courseparser
 import course_structures
 import numpy as np
 import pandas as pd
 from itertools import combinations, product
-import functools
-import matplotlib
 import json
 import re
 import matplotlib.pyplot as plt
-from pandas.plotting import table
 import six
 
-# binary search and basic scheduler as defined by https://www.geeksforgeeks.org/weighted-job-scheduling-log-n-time/
-# classes are defined in total start time since Monday with Monday 12:00 am being 0 time and Sunday 11:59 pm being the latest time
-
-def binarySearch(job, start_index):
-    #
-    # Initialize 'lo' and 'hi' for Binary Search
-    lo = 0
-    hi = start_index - 1
-
-    # Perform binary Search iteratively
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        if job[mid].finish <= job[start_index].start:
-            if job[mid + 1].finish <= job[start_index].start:
-                lo = mid + 1
-            else:
-                return mid
-        else:
-            hi = mid - 1
-    return -1
-# The main function that returns the maximum possible
-# profit from given array of jobs
-def schedule(job):
-    # Sort jobs according to finish time
-    job = sorted(job, key=lambda j: j.finish)
-
-    # Create an array to store solutions of subproblems.  table[i]
-    # stores the profit for jobs till arr[i] (including arr[i])
-    n = len(job)
-    table = [0 for _ in range(n)]
-
-    table[0] = job[0].profit;
-
-    # Fill entries in table[] using recursive property
-    for i in range(1, n):
-
-        # Find profit including the current job
-        inclProf = job[i].profit
-        l = binarySearch(job, i)
-        if (l != -1):
-            inclProf += table[l];
-
-            # Store maximum of including and excluding
-        table[i] = max(inclProf, table[i - 1])
-
-    return table[n - 1]
-
 def getSections(df, dept, classNum):
+    """
+    :return dataframe with classes matching the specified dept + classNum
+    """
     dept_df = df[df['Dept'] == dept]
     rslt_df = dept_df[dept_df['ClassNum'] == classNum]
     return rslt_df
 
 def genSchedules(df, pathIn):
     """
-    :param classTargs: list of tuples (Dept, classNum) which we should generate schedules with
-    :return: collection of schedules
+    :param pathIn: a path to dept and classNum arguments
+    :return: collection of all iterations schedules matching given parameters
     """
-    classTargs = getClassTargets(pathIn)
+    classTargs = getClassTargets(pathIn) #convert path to a list of tuples (Dept, classNum) which we should generate schedules with
     sectionsList = []
     sectionsIndecies = []
     sectionsIndex = 0
-    for classTarg in classTargs:
+    for classTarg in classTargs: #populate relevant lists
         x, y = classTarg
         sectionsList.append(getSections(df, x, y))
 
@@ -80,10 +32,10 @@ def genSchedules(df, pathIn):
     sectionsIndex += len(startDF.index)
     sectionsIndecies.append(sectionsIndex)
 
-    for secDF in remainingDf:
+    for secDF in remainingDf: #merge all the classes sections that match the arguments into startDF, in the end, it will contain all sections we will gen schedules from
         startDF = pd.merge(startDF, secDF, how='outer')
         sectionsIndex += len(secDF.index)
-        sectionsIndecies.append(sectionsIndex)
+        sectionsIndecies.append(sectionsIndex) #track which indecies a class belongs to (ex. 5 sections of CS 151 holds indecies 4 - 9 in startDF)
 
     generatorIndex = 0
     generatorList = []
@@ -93,22 +45,14 @@ def genSchedules(df, pathIn):
         generatorList.append([*range(generatorIndex, index)])
         generatorIndex = index
 
-    scheduleIndecies = list(product(*generatorList))
+    scheduleIndecies = list(product(*generatorList)) #generate all indecies of possible schedules (ex (1, 4, 8) means make a schedule using the classes at indecies 1, 4, 8 of startDF)
 
     schedules = []
 
-    for index in scheduleIndecies:
+    for index in scheduleIndecies: #from indecies list, generate dataframes actually holding the data from startDF
         schedules.append(startDF.loc[index, :])
-        #print(startDF.loc[index, :])
-    schedules = [x for x in schedules if noConflicts(x)]
-    #print(schedules)
+    schedules = [x for x in schedules if noConflicts(x)] #remove conflicts
     return schedules
-
-
-def showSchedules(schedules):
-    #todo return a list of schedules as a png
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
-    colors = ['pink', 'lightgreen', 'lightblue', 'wheat', 'salmon']
 
 def parseJson(jsonInput):
     with open(jsonInput) as f:
@@ -116,19 +60,16 @@ def parseJson(jsonInput):
     return data
 
 def getClassTargets(jsonPath):
+    """
+    :param jsonPath: path for arguments for the clients preferred classes (dept, classnum)
+    :return:
+    """
     classDict = parseJson(jsonPath)
     values = (classDict['className1'], classDict['classNumber1'],
               classDict['className2'], classDict['classNumber2'],
               classDict['className3'], classDict['classNumber3'],
               classDict['className4'], classDict['classNumber4'],
               classDict['className5'], classDict['classNumber5'],
-              """
-              classDict['className6'], classDict['classNumber6'],
-              classDict['className7'], classDict['classNumber7'],
-              classDict['className8'], classDict['classNumber8'],
-              classDict['className9'], classDict['classNumber9'],
-              classDict['className10'], classDict['classNumber10'],
-              """
              )
     #values = list(classDict.values())
     values = [x.strip(' ') for x in values if x != '']
@@ -136,7 +77,11 @@ def getClassTargets(jsonPath):
     rtn = list(zip(it, it))
     return(rtn)
 
-def noConflicts(scheduleDF):
+def noConflicts(scheduleDF): #function for finding whether a schedule has conflicts
+    """
+    :param scheduleDF: schedule we are checking for conflicts
+    :return: boolean confirming whether the schedule is valid
+    """
     dayVals = {'M': 0, 'T': 2400, 'W': 4800, 'R': 7200, 'F': 9600}
     times = []
     for index, row in scheduleDF.iterrows():
@@ -144,16 +89,17 @@ def noConflicts(scheduleDF):
             times.append((int(row["StartTime"]) + dayVals.get(row["Days"][0:1]), int(row["EndTime"]) + dayVals.get(row["Days"][0:1])))
             if (dayVals.__contains__(row["Days"][1:2]) is True): #check if class has multiple days
                 times.append((int(row["StartTime"]) + dayVals.get(row["Days"][1:2]), int(row["EndTime"]) + dayVals.get(row["Days"][1:2])))
-            #print(row["StartTime"], row["EndTime"], dayVals.get(row["Days"][1:2]))
     checkTimes = combinations(times, 2)
-    for checks in checkTimes:
+    for checks in checkTimes: #for all combinations of classes (class1, class2), (class1, class3) etc, check for any scheduling overlaps
         (s1, e1), (s2, e2) = checks
-        if isConflict(s1, e1, s2, e2):
+        if isConflict(s1, e1, s2, e2): #if one exists, then the whole schedule is invalid
             return False
-    #print(times)
     return True
 
-def isConflict(startTime1, endTime1, startTime2, endTime2):
+def isConflict(startTime1, endTime1, startTime2, endTime2): #check for an individual conflict between two classes
+    """
+    :return: boolean indicating conflict
+    """
     if (startTime1 < startTime2):
         if (endTime1 > startTime2):
             return True
@@ -163,6 +109,10 @@ def isConflict(startTime1, endTime1, startTime2, endTime2):
     return False
 
 def getCloseness(scheduleDF):
+    """
+    :param scheduleDF: schedule we want rating for
+    :return: normalized score for closeness of given schedule
+    """
     dayVals = {'M': 0, 'T': 2400, 'W': 4800, 'R': 7200, 'F': 9600}
     times = []
     rtn = 0.0
@@ -174,7 +124,6 @@ def getCloseness(scheduleDF):
             if (dayVals.__contains__(row["Days"][1:2]) is True): #check if class has multiple days
                 times.append((int(row["StartTime"]) + dayVals.get(row["Days"][1:2]), int(row["EndTime"]) + dayVals.get(row["Days"][1:2])))
                 classCount += 1
-            #print(row["StartTime"], row["EndTime"], dayVals.get(row["Days"][1:2]))
     times = sorted(times, key = lambda x: x[0])
     maxindex = len(times) - 1
     for x in range(len(times)):
@@ -182,40 +131,39 @@ def getCloseness(scheduleDF):
             diff = times[maxindex - x][0] - times[maxindex - (x + 1)][1] #difference from start time and end time of 2 conseq classes
             if diff < 1200: #ignoring different days, how close are the classes in the schedule generally?
                 rtn += diff
-            #print(diff)
-        #print(times[maxindex - x])
+    #diff contains a sumed value for how 'far' classes on the same day are from one another
     rtn = 1.0 - ((rtn / classCount) / 250) #normalize the value
-    #print(rtn)
     return rtn
 
 
-def rank(dfList, length, alg = None, path = 'solutions.json'):
-    #dfList = list of schedules, len = length of returned 'top' schedules
-    if len(dfList) < length:
-        print("invalid arguments")
-        return
-    if alg is None:
-        pathComponents = re.split('.json', path, 1)
-        for index in range(length):
-            (dfList[index]).to_json(pathComponents[0] + index.__str__() + ".json", orient = 'split')
-
 def rankPng(dfList, length, alg = None, path = 'solutions.png', pweight = 1, cweight = 1):
+    """
+    :param dfList: list containing a # of schedules we want to rank
+    :param length: the # of solutions(top via ranking method) we return
+    :param alg: how do we want it ranked? (none: no method 1: profscore only, 2: closeness only, 3:weighted ranking by profscore and closeness)
+    :param pweight: only necessary for alg 3, how much weight to put into prof rating?
+    :param cweight: only necessary for alg 3, how much weight to put into closeness?
+    :return: the top <length> schedules ranked by <alg> saved to <path>[index].png
+    """
     if len(dfList) < length:
         print("invalid arguments")
         return
     # dfList = list of schedules, len = length of returned 'top' schedules
     if alg is None:
+        #no sorting algorithm is applied
         pathComponents = re.split('.png', path, 1)
         for index in range(length):
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
     elif alg is 1:
+        #algorithm uses profscore only
         dfList = sorted(dfList, key = lambda x: -x['Rating'].sum())
         pathComponents = re.split('.png', path, 1)
         for index in range(length):
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
     elif alg is 2:
+        #algorithm uses closeness only
         dfList = sorted(dfList, key = lambda x: -getCloseness(x))
         pathComponents = re.split('.png', path, 1)
         for index in range(length):
@@ -230,12 +178,10 @@ def rankPng(dfList, length, alg = None, path = 'solutions.png', pweight = 1, cwe
             del dfList[index]['SeatsTotal']
             del dfList[index]['ClassCode']
             del dfList[index]['ClassMode']
-            #print ("profscore: " + (dfList[index]['Rating'].sum()/ (len(dfList[index].index) * 5)).__str__())
-            #print ("closeness: " + getCloseness(dfList[index]).__str__())
             render_mpl_table(dfList[index], header_columns=0, col_width=2.0)
             plt.savefig(pathComponents[0] + index.__str__() + ".png")
 
-
+#basic table display used in rankPng obtained via: https://stackoverflow.com/questions/19726663/how-to-save-the-pandas-dataframe-series-data-as-a-figure
 def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
                      header_color='#40466e', row_colors=['#f1f1f2', 'w'], edge_color='w',
                      bbox=[0, 0, 1, 1], header_columns=0,
@@ -260,10 +206,9 @@ def render_mpl_table(data, col_width=3.0, row_height=0.625, font_size=14,
     return ax
 
 def main():
-    semester = course_structures.Semester(True)
-    targets = genSchedules(semester.df1, 'classargs.json')
-    rankPng(targets, 3, alg = 3, pweight = 3, cweight = 1)
-    #noConflicts(targets)
+    semester = course_structures.Semester(True) #working with the Spring semester
+    targets = genSchedules(semester.df1, 'classargs.json') #generate all possible iterations of class schedules
+    rankPng(targets, 3, alg = 3, pweight = 3, cweight = 1) #rank the schedules based on weighted algorithm, with prof weight 3 and closeness weight 1
 
 if __name__ == "__main__":
     main()

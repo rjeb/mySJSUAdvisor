@@ -1,5 +1,4 @@
 import re
-import numpy as np
 import pandas as pd
 
 class Course(object):
@@ -44,11 +43,7 @@ class Course(object):
         self.professor_name = re.sub("Instructor", "", course_lines[16], 1)
         self.class_code = re.sub("Code", "", course_lines[6], 1)
         self.class_mode = re.sub("Mode", "", course_lines[9], 1)
-        #if (course_lines[17] != ""):
         self.department_name, self.class_num = re.split(" ", course_lines[0], 1)
-        #else: #edgecase format http://info.sjsu.edu/web-dbgen/schedules-spring/c4746268.html where class was TBA but was given time later
-            #self.department_name, self.class_num = re.split(" ", course_lines[23], 1)
-        #print(self.department_name + " " + self.class_num)
 
     def to_string(self):
         print("Class: " + self.department_name + " " + self.class_num)
